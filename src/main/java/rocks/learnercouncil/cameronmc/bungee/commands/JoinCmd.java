@@ -6,14 +6,13 @@ import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.TabExecutor;
-import org.bukkit.command.TabCompleter;
 import rocks.learnercouncil.cameronmc.bungee.CameronMC;
 import rocks.learnercouncil.cameronmc.bungee.events.ServerConnected;
 import rocks.learnercouncil.cameronmc.bungee.util.PluginMessageHandler;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 public class JoinCmd extends Command implements TabExecutor {
     private static final CameronMC plugin = CameronMC.getInstance();
@@ -34,16 +33,18 @@ public class JoinCmd extends Command implements TabExecutor {
                 return;
             }
             if(args.length == 1) {
-                if(plugin.navigatorCfg.getConfig().contains(args[0])) {
-                    ServerInfo server = plugin.getProxy().getServerInfo(getConfigString(args[0] + ".server"));
-                    String world = getConfigString(args[0] + ".world");
-                    String x = getConfigString(args[0] + ".x");
-                    String y = getConfigString(args[0] + ".y");
-                    String z = getConfigString(args[0] + ".z");
-                    String pitch = getConfigString(args[0] + ".pitch");
-                    String yaw = getConfigString(args[0] + ".yaw");
+                List<String> keys = plugin.navigatorCfg.getConfig().getKeys().stream().filter(s -> s.equalsIgnoreCase(args[0])).collect(Collectors.toList());
+                if(!keys.isEmpty()) {
+                    String key = keys.get(0);
+                    ServerInfo server = plugin.getProxy().getServerInfo(getConfigString(key + ".server"));
+                    String world = getConfigString(key + ".world");
+                    String x = getConfigString(key + ".x");
+                    String y = getConfigString(key + ".y");
+                    String z = getConfigString(key + ".z");
+                    String pitch = getConfigString(key + ".pitch");
+                    String yaw = getConfigString(key + ".yaw");
                     sendPlayer(p, server, world, x, y, z, pitch, yaw);
-                    p.sendMessage(new ComponentBuilder("§b[Cameron] §aSending you to \"" + (args[0]) + "\" now...").create());
+                    p.sendMessage(new ComponentBuilder("§b[Cameron] §aSending you to \"" + (key) + "\" now...").create());
                     return;
                 }
                 p.sendMessage(new ComponentBuilder("§b[Cameron] §cThe location \"" + args[0] + "\" does not exist.").create());
