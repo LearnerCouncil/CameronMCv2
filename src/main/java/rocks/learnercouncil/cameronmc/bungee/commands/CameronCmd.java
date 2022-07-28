@@ -5,14 +5,11 @@ import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.TabExecutor;
-import org.bukkit.command.TabCompleter;
 import rocks.learnercouncil.cameronmc.bungee.CameronMC;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.stream.Collectors;
 
 public class CameronCmd extends Command implements TabExecutor {
     private static final CameronMC plugin = CameronMC.getInstance();
