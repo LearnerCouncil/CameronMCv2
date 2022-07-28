@@ -57,10 +57,10 @@ public class JoinCmd extends Command implements TabExecutor {
 
     private void sendPlayer(ProxiedPlayer player, ServerInfo server, String world, String x, String y, String z, String pitch, String yaw) {
         if(!player.getServer().getInfo().getName().equals(server.getName())) {
+            PluginMessageHandler.sendPluginMessage(server, "teleport-player", player.getUniqueId().toString(), world, x, y, z, pitch, yaw, "true");
             player.connect(server);
-            PluginMessageHandler.sendPluginMessage(server, "teleport-player", player.getUniqueId().toString(), world, x, y, z, pitch, yaw);
         } else {
-            PluginMessageHandler.sendPluginMessage(player.getServer().getInfo(), "teleport-player", player.getUniqueId().toString(), world, x, y, z, pitch, yaw);
+            PluginMessageHandler.sendPluginMessage(player.getServer().getInfo(), "teleport-player", player.getUniqueId().toString(), world, x, y, z, pitch, yaw, "false");
         }
     }
 

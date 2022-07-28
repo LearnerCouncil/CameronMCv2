@@ -40,7 +40,11 @@ public class PluginMessageHandler implements PluginMessageListener {
             double z = Double.parseDouble(in.readUTF());
             float pitch = Float.parseFloat(in.readUTF());
             float yaw = Float.parseFloat(in.readUTF());
-            PlayerJoin.queueTeleport(p, new Location(world, x, y, z, yaw, pitch));
+            String newServer = in.readUTF();
+            if(newServer.equals("true"))
+                PlayerJoin.queueTeleport(p, new Location(world, x, y, z, yaw, pitch));
+            else
+                p.teleport(new Location(world, x, y, z, yaw, pitch));
             plugin.getLogger().fine("(PluginMessageHandler) Teleporting " + p.getName() + ", World: " + world + ", XYZ: " + x + ", " + y + ", " + z + ", Rotation: " + yaw + ", " + pitch);
         }
 

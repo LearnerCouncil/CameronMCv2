@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import rocks.learnercouncil.cameronmc.spigot.CameronMC;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,7 +23,9 @@ public class PlayerJoin implements Listener {
         //Handle join commmand
         Player player = e.getPlayer();
         if(queuedPlayers.containsKey(player)) {
+            CameronMC.getInstance().getLogger().fine("Teleporting player " + player.getName() + " to " + queuedPlayers.get(player));
             player.teleport(queuedPlayers.get(player));
+            queuedPlayers.remove(player);
         }
 
         //Handle Join Message
@@ -34,5 +37,6 @@ public class PlayerJoin implements Listener {
 
     public static void queueTeleport(Player player, Location location) {
         queuedPlayers.put(player, location);
+        CameronMC.getInstance().getLogger().fine("Queueing teleport of player " + player.getName() + " to location " + location);
     }
 }

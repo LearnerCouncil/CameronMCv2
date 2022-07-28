@@ -19,7 +19,7 @@ public class CameronMC extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
-        getLogger().setLevel(Level.INFO);
+        getLogger().setLevel(Level.FINE);
         getLogger().info("CameronMC (Spigot) started.");
         checkIfBungee();
         getServer().getMessenger().registerOutgoingPluginChannel(this, "cameron:main");
