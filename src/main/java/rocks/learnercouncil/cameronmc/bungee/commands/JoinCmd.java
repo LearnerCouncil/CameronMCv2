@@ -7,7 +7,6 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.TabExecutor;
 import rocks.learnercouncil.cameronmc.bungee.CameronMC;
-import rocks.learnercouncil.cameronmc.bungee.events.ServerConnected;
 import rocks.learnercouncil.cameronmc.bungee.util.PluginMessageHandler;
 
 import java.util.ArrayList;
@@ -53,13 +52,13 @@ public class JoinCmd extends Command implements TabExecutor {
             p.sendMessage(new ComponentBuilder("§b[Cameron] §cToo many arguments!").create());
             return;
         }
-        plugin.getLogger().warning("§b[Cameron] §cNeeds to be executed by a player");
+        plugin.getLogger().warning("§b[Cameron] §c'/join' needs to be executed by a player");
     }
 
     private void sendPlayer(ProxiedPlayer player, ServerInfo server, String world, String x, String y, String z, String pitch, String yaw) {
         if(!player.getServer().getInfo().getName().equals(server.getName())) {
-            ServerConnected.queuedPlayers.put(player, () -> PluginMessageHandler.sendPluginMessage(server, "teleport-player", player.getUniqueId().toString(), world, x, y, z, pitch, yaw));
             player.connect(server);
+            PluginMessageHandler.sendPluginMessage(server, "teleport-player", player.getUniqueId().toString(), world, x, y, z, pitch, yaw);
         } else {
             PluginMessageHandler.sendPluginMessage(player.getServer().getInfo(), "teleport-player", player.getUniqueId().toString(), world, x, y, z, pitch, yaw);
         }

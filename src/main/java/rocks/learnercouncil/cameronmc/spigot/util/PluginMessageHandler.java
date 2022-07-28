@@ -9,10 +9,12 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 import rocks.learnercouncil.cameronmc.spigot.CameronMC;
+import rocks.learnercouncil.cameronmc.spigot.events.PlayerJoin;
 
 import java.util.Arrays;
 import java.util.UUID;
 
+@SuppressWarnings("UnstableApiUsage")
 public class PluginMessageHandler implements PluginMessageListener {
     private static final CameronMC plugin = CameronMC.getInstance();
 
@@ -38,8 +40,8 @@ public class PluginMessageHandler implements PluginMessageListener {
             double z = Double.parseDouble(in.readUTF());
             float pitch = Float.parseFloat(in.readUTF());
             float yaw = Float.parseFloat(in.readUTF());
-            p.teleport(new Location(world, x, y, z, yaw, pitch));
-            plugin.getLogger().fine("{PluginMessageHandler) Teleporting " + p.getName() + ", World: " + world + ", XYZ: " + x + ", " + y + ", " + z + ", Rotation: " + yaw + ", " + pitch);
+            PlayerJoin.queueTeleport(p, new Location(world, x, y, z, yaw, pitch));
+            plugin.getLogger().fine("(PluginMessageHandler) Teleporting " + p.getName() + ", World: " + world + ", XYZ: " + x + ", " + y + ", " + z + ", Rotation: " + yaw + ", " + pitch);
         }
 
     }

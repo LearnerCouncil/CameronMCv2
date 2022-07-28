@@ -1,17 +1,14 @@
 package rocks.learnercouncil.cameronmc.bungee;
 
 import net.md_5.bungee.api.plugin.Plugin;
-import net.md_5.bungee.config.Configuration;
 import rocks.learnercouncil.cameronmc.bungee.commands.CameronCmd;
 import rocks.learnercouncil.cameronmc.bungee.commands.HubCmd;
 import rocks.learnercouncil.cameronmc.bungee.commands.JoinCmd;
 import rocks.learnercouncil.cameronmc.bungee.commands.LCMsgCmd;
 import rocks.learnercouncil.cameronmc.bungee.events.PlayerJoin;
-import rocks.learnercouncil.cameronmc.bungee.events.ServerConnected;
 import rocks.learnercouncil.cameronmc.bungee.util.ConfigFile;
 import rocks.learnercouncil.cameronmc.bungee.util.PluginMessageHandler;
 
-import java.util.List;
 import java.util.logging.Level;
 
 public final class CameronMC extends Plugin {
@@ -34,7 +31,6 @@ public final class CameronMC extends Plugin {
 
         getProxy().registerChannel("cameron:main");
         getProxy().getPluginManager().registerListener(this, new PluginMessageHandler());
-        getProxy().getPluginManager().registerListener(this, new ServerConnected());
         getProxy().getPluginManager().registerListener(this, new PlayerJoin());
 
         getProxy().getPluginManager().registerCommand(this, new JoinCmd());
