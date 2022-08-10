@@ -33,6 +33,7 @@ public class CameronMC extends JavaPlugin {
         getServer().getMessenger().registerOutgoingPluginChannel(this, "cameron:main");
         getServer().getMessenger().registerIncomingPluginChannel(this, "cameron:main", new PluginMessageHandler());
 
+        getServer().getPluginManager().registerEvents(new PlayerChat(), this);
         getServer().getPluginManager().registerEvents(new PlayerJoin(), this);
         getServer().getPluginManager().registerEvents(new PlayerLeave(), this);
 
