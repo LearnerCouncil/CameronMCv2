@@ -13,8 +13,6 @@ import java.util.logging.Level;
 public class CameronMC extends JavaPlugin {
     private static CameronMC instance;
 
-    public static boolean papi;
-
     public static CameronMC getInstance() {
         return instance;
     }
@@ -25,7 +23,6 @@ public class CameronMC extends JavaPlugin {
         getLogger().setLevel(Level.INFO);
         getLogger().info("CameronMC (Spigot) started.");
         checkIfValid();
-
         saveDefaultConfig();
 
         PlayerChat.chatStyle = getConfig().getString("chat-style");
@@ -58,9 +55,5 @@ public class CameronMC extends JavaPlugin {
             getLogger().severe( "Plugin disabled!" );
             getServer().getPluginManager().disablePlugin( this );
         }
-    }
-
-    public static boolean isPapi() {
-        return papi;
     }
 }
