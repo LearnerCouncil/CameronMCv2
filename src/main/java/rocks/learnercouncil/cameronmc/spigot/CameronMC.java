@@ -29,6 +29,7 @@ public class CameronMC extends JavaPlugin {
         saveDefaultConfig();
 
         PlayerChat.chatStyle = getConfig().getString("chat-style");
+        PlayerChat.enabled = getConfig().getBoolean("global-chat");
 
         getServer().getMessenger().registerOutgoingPluginChannel(this, "cameron:main");
         getServer().getMessenger().registerIncomingPluginChannel(this, "cameron:main", new PluginMessageHandler());

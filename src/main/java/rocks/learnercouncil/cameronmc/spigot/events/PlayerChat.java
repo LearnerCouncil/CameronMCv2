@@ -9,9 +9,11 @@ import rocks.learnercouncil.cameronmc.spigot.util.PluginMessageHandler;
 
 public class PlayerChat implements Listener {
     public static String chatStyle = "";
+    public static boolean enabled = false;
 
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent e) {
+        if(!enabled) return;
         if(chatStyle == null) chatStyle = "&f<%player_name%> ";
         String msg =
                 ChatColor.translateAlternateColorCodes( '&',
