@@ -3,7 +3,9 @@ package rocks.learnercouncil.cameronmc.bungee.util;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.config.ServerInfo;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PluginMessageEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.config.Configuration;
@@ -49,6 +51,12 @@ public class PluginMessageHandler implements Listener {
             cfg.set(entry + ".pitch", in.readUTF());
             cfg.set(entry + ".yaw", in.readUTF());
             plugin.navigatorCfg.saveConfig();
+        } else if(subchannel.equals("chat-message")) {
+            String uuid = in.readUTF();
+            String msg = in.readUTF();
+            for(ProxiedPlayer p : plugin.getProxy().getPlayers()) {
+                p.sendMessage(UUID.fromString(uuid), new ComponentBuilder(msg).create());
+            }
         }
     }
 }
