@@ -1,0 +1,2 @@
+chat-style: "&f[%multiverse_world_color%%multiverse_world_alias%&f] %vault_prefix%%player_displayname%&f: "
+global-chat: true
