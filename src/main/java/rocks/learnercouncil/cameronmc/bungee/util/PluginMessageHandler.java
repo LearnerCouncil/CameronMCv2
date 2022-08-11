@@ -59,16 +59,18 @@ public class PluginMessageHandler implements Listener {
         } else if(subchannel.equals("chat-message")) {
             String msg = in.readUTF();
             for(ProxiedPlayer p : plugin.getProxy().getPlayers()) {
-                ComponentBuilder b = new ComponentBuilder(msg);
-                String stripped = ComponentSerializer.toString(b.create());
-                if(p.hasPermission("cameron.chat.delete")) {
-                    b.append(" [x]").color(ChatColor.RED);
-                    int hashCode = ComponentSerializer.toString(b.create()).hashCode();
-                    b.event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/cameronb deleteMessage " + hashCode));
-                }
-                String message = ComponentSerializer.toString(b.create());
-                ChatHandler.addMessage(p.getUniqueId(), new ChatMessage(message, stripped));
-                p.sendMessage(b.create());
+                ComponentBuilder builder = new ComponentBuilder(msg);
+                String stripped = ComponentSerializer.toString(builder.create());
+                int hashCode = ComponentSerializer.toString(builder.create()).hashCode();
+                ComponentBuilder delBuilder = new ComponentBuilder(builder);
+                delBuilder.append(" [x]").color(ChatColor.RED).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/cameronb deleteMessage " + hashCode));
+                String message = ComponentSerializer.toString(delBuilder.create());
+                ChatMessage cm = new ChatMessage(message, stripped);
+                ChatHandler.addMessage(p.getUniqueId(), cm);
+                if(p.hasPermission("cameron.chat.delete"))
+                    p.sendMessage(delBuilder.create());
+                else
+                    p.sendMessage(builder.create());
             }
         }
     }

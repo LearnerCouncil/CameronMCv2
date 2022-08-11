@@ -22,7 +22,6 @@ public class DownstreamChat extends AbstractPacketListener<Chat> {
         Chat packet = packetReceiveEvent.packet();
         if(packet.getPosition() == 0 || (packet.getPosition() == 1)) {
             UUID uuid = packetReceiveEvent.player().uniqueId();
-            if (ChatHandler.hasMessage(uuid, packet.getMessage())) return;
             ChatHandler.addMessage(uuid, new ChatMessage(packet.getMessage()));
         }
     }

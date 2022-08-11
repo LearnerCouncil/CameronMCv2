@@ -30,6 +30,14 @@ public class ChatMessage {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if(o == this) return true;
+        if(!(o instanceof ChatMessage)) return false;
+        ChatMessage c = (ChatMessage) o;
+        return c.message.equals(this.message) && c.stripped.equals(this.stripped);
+    }
+
+    @Override
     public int hashCode() {
         return stripped.hashCode();
     }
