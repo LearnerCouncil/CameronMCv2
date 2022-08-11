@@ -6,6 +6,7 @@ import com.google.common.io.ByteStreams;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PluginMessageEvent;
@@ -60,7 +61,6 @@ public class PluginMessageHandler implements Listener {
                 ComponentBuilder b = new ComponentBuilder(msg);
                 if(p.hasPermission("cameron.chat.delete")) {
                     b.append(" [x]").color(ChatColor.RED);
-                    plugin.getLogger().info("Msg: " + ComponentSerializer.toString(b.create()));
                     int hashCode = ComponentSerializer.toString(b.create()).hashCode();
                     b.event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/cameronb deleteMessage " + hashCode));
                 }

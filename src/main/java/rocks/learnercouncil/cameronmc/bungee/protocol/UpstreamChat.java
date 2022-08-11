@@ -22,9 +22,7 @@ public class UpstreamChat extends AbstractPacketListener<Chat> {
     @Override
     public void packetSend(PacketSendEvent<Chat> packetSendEvent) {
         Chat packet = packetSendEvent.packet();
-        if(packet.getPosition() == 0 || (packet.getPosition() == 1)) {
-            ProxyServer.getInstance().getLogger().warning("[Upstream] (PacketSendEvent): Position: " + packet.getPosition() + ", Message: " + packet.getMessage());
+        if(packet.getPosition() == 0 || (packet.getPosition() == 1))
             ChatHandler.addMessage(packetSendEvent.player().uniqueId(), packet.getMessage());
-        }
     }
 }

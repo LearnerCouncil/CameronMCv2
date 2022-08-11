@@ -17,10 +17,8 @@ public class DownstreamChat extends AbstractPacketListener<Chat> {
     @Override
     public void packetReceive(PacketReceiveEvent<Chat> packetReceiveEvent) {
         Chat packet = packetReceiveEvent.packet();
-        if(packet.getPosition() == 0 || (packet.getPosition() == 1)) {
-            ProxyServer.getInstance().getLogger().warning("[Downstream] (PacketReceiveEvent): " + "Position: " + packet.getPosition() + ", Message: " + packet.getMessage());
+        if(packet.getPosition() == 0 || (packet.getPosition() == 1))
             ChatHandler.addMessage(packetReceiveEvent.player().uniqueId(), packet.getMessage());
-        }
     }
 
     @Override
