@@ -19,7 +19,7 @@ public class PlayerChat implements Listener {
                 ChatColor.translateAlternateColorCodes( '&',
                 PlaceholderAPI.setPlaceholders(e.getPlayer(), chatStyle)
                 ) + e.getMessage();
-        PluginMessageHandler.sendPluginMessage(e.getPlayer(), "chat-message", e.getPlayer().getUniqueId().toString(), msg);
+        PluginMessageHandler.sendPluginMessage(e.getPlayer(), "chat-message", msg);
         e.setCancelled(true);
     }
 }
