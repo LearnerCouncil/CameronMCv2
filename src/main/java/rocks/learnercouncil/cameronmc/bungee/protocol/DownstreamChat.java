@@ -7,6 +7,9 @@ import dev.simplix.protocolize.api.listener.PacketSendEvent;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.protocol.packet.Chat;
 import rocks.learnercouncil.cameronmc.bungee.util.ChatHandler;
+import rocks.learnercouncil.cameronmc.bungee.util.ChatMessage;
+
+import java.util.UUID;
 
 public class DownstreamChat extends AbstractPacketListener<Chat> {
 
@@ -17,8 +20,11 @@ public class DownstreamChat extends AbstractPacketListener<Chat> {
     @Override
     public void packetReceive(PacketReceiveEvent<Chat> packetReceiveEvent) {
         Chat packet = packetReceiveEvent.packet();
-        if(packet.getPosition() == 0 || (packet.getPosition() == 1))
-            ChatHandler.addMessage(packetReceiveEvent.player().uniqueId(), packet.getMessage());
+        if(packet.getPosition() == 0 || (packet.getPosition() == 1)) {
+            UUID uuid = packetReceiveEvent.player().uniqueId();
+            if (ChatHandler.hasMessage(uuid, packet.getMessage())) return;
+            ChatHandler.addMessage(uuid, new ChatMessage(packet.getMessage()));
+        }
     }
 
     @Override

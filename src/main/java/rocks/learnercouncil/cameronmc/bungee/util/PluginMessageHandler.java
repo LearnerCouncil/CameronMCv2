@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.UUID;
 import java.util.logging.Level;
 
+@SuppressWarnings("UnstableApiUsage")
 public class PluginMessageHandler implements Listener {
     private static final CameronMC plugin = CameronMC.getInstance();
 
@@ -59,11 +60,14 @@ public class PluginMessageHandler implements Listener {
             String msg = in.readUTF();
             for(ProxiedPlayer p : plugin.getProxy().getPlayers()) {
                 ComponentBuilder b = new ComponentBuilder(msg);
+                String stripped = ComponentSerializer.toString(b.create());
                 if(p.hasPermission("cameron.chat.delete")) {
                     b.append(" [x]").color(ChatColor.RED);
                     int hashCode = ComponentSerializer.toString(b.create()).hashCode();
                     b.event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/cameronb deleteMessage " + hashCode));
                 }
+                String message = ComponentSerializer.toString(b.create());
+                ChatHandler.addMessage(p.getUniqueId(), new ChatMessage(message, stripped));
                 p.sendMessage(b.create());
             }
         }

@@ -57,7 +57,11 @@ public class CameronCmd extends Command implements TabExecutor {
                 return;
             } else if(args.length == 2) {
                 if(args[0].equalsIgnoreCase("deletemessage")) {
-                    ChatHandler.deleteMessage(p.getUniqueId(), Integer.parseInt(args[1]));
+                    try {
+                        ChatHandler.deleteMessage(p.getUniqueId(), Integer.parseInt(args[1]));
+                    } catch (NumberFormatException e) {
+                        p.sendMessage(new ComponentBuilder("§b[Cameron] §cInvalid hash value. This shouldn't happen unless you tried running '/cameron deletemessage' manually as opposed to just clicking the [x], so if it did, something's wrong with the plugin.").create());
+                    }
                     return;
                 }
             }
