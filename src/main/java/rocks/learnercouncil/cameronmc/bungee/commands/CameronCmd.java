@@ -6,6 +6,7 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.TabExecutor;
 import rocks.learnercouncil.cameronmc.bungee.CameronMC;
+import rocks.learnercouncil.cameronmc.bungee.util.ChatHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +55,15 @@ public class CameronCmd extends Command implements TabExecutor {
                 }
                 p.sendMessage(new ComponentBuilder("§b[Cameron] §cInvalid arguments").create());
                 return;
+            } else if(args.length == 2) {
+                if(args[0].equalsIgnoreCase("deletemessage")) {
+                    try {
+                        ChatHandler.deleteMessage(p.getUniqueId(), Integer.parseInt(args[1]));
+                    } catch (NumberFormatException e) {
+                        p.sendMessage(new ComponentBuilder("§b[Cameron] §cInvalid hash value. This shouldn't happen unless you tried running '/cameron deletemessage' manually as opposed to just clicking the [x], so if it did, something's wrong with the plugin.").create());
+                    }
+                    return;
+                }
             }
             p.sendMessage(new ComponentBuilder("§b[Cameron] §cToo many arguments!").create());
             return;
