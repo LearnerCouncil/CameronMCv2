@@ -7,6 +7,7 @@ import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.TabExecutor;
 import rocks.learnercouncil.cameronmc.bungee.CameronMC;
 import rocks.learnercouncil.cameronmc.bungee.util.ChatHandler;
+import rocks.learnercouncil.cameronmc.bungee.util.CommandSpyHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +38,8 @@ public class CameronCmd extends Command implements TabExecutor {
                         return;
                     }
                     plugin.navigatorCfg.reloadConfig();
+                    plugin.cfg.reloadConfig();
+                    CommandSpyHandler.reloadSpies();
                     p.sendMessage(new ComponentBuilder("§b[Cameron] §aConfig reloaded.").create());
                     return;
                 } else if(args[0].equalsIgnoreCase("debug")) {
