@@ -8,6 +8,7 @@ import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.protocol.packet.Chat;
 import rocks.learnercouncil.cameronmc.bungee.util.ChatHandler;
 import rocks.learnercouncil.cameronmc.bungee.util.ChatMessage;
+import rocks.learnercouncil.cameronmc.bungee.util.CommandSpyHandler;
 
 import java.lang.reflect.Proxy;
 import java.util.UUID;
@@ -19,7 +20,10 @@ public class UpstreamChat extends AbstractPacketListener<Chat> {
     }
 
     @Override
-    public void packetReceive(PacketReceiveEvent<Chat> packetReceiveEvent) {}
+    public void packetReceive(PacketReceiveEvent<Chat> packetReceiveEvent) {
+        Chat packet = packetReceiveEvent.packet();
+        CommandSpyHandler.sendMessage(packetReceiveEvent.player().uniqueId(), packet.getMessage());
+    }
 
     @Override
     public void packetSend(PacketSendEvent<Chat> packetSendEvent) {
