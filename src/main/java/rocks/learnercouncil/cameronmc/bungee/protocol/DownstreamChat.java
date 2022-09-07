@@ -4,7 +4,6 @@ import dev.simplix.protocolize.api.Direction;
 import dev.simplix.protocolize.api.listener.AbstractPacketListener;
 import dev.simplix.protocolize.api.listener.PacketReceiveEvent;
 import dev.simplix.protocolize.api.listener.PacketSendEvent;
-import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.protocol.packet.Chat;
 import rocks.learnercouncil.cameronmc.bungee.util.ChatHandler;
 import rocks.learnercouncil.cameronmc.bungee.util.ChatMessage;

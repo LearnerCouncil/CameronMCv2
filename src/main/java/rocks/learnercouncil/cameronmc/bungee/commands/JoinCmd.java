@@ -43,8 +43,8 @@ public class JoinCmd extends Command implements TabExecutor {
                     String z = getConfigString(key + ".z");
                     String pitch = getConfigString(key + ".pitch");
                     String yaw = getConfigString(key + ".yaw");
-                    sendPlayer(p, server, world, x, y, z, pitch, yaw);
                     p.sendMessage(new ComponentBuilder("§b[Cameron] §aSending you to \"" + (key) + "\" now...").create());
+                    sendPlayer(p, server, world, x, y, z, pitch, yaw);
                     return;
                 }
                 p.sendMessage(new ComponentBuilder("§b[Cameron] §cThe location \"" + args[0] + "\" does not exist.").create());
@@ -58,8 +58,14 @@ public class JoinCmd extends Command implements TabExecutor {
 
     private void sendPlayer(ProxiedPlayer player, ServerInfo server, String world, String x, String y, String z, String pitch, String yaw) {
         if(!player.getServer().getInfo().getName().equals(server.getName())) {
-            ServerConnected.queuedPlayers.put(player, () -> PluginMessageHandler.sendPluginMessage(server, "teleport-player", player.getUniqueId().toString(), world, x, y, z, pitch, yaw));
-            player.connect(server);
+            server.ping(((result, error) -> {
+                if(error == null) {
+                    ServerConnected.queuedPlayers.put(player, () -> PluginMessageHandler.sendPluginMessage(server, "teleport-player", player.getUniqueId().toString(), world, x, y, z, pitch, yaw));
+                    player.connect(server);
+                } else {
+                    player.sendMessage(new ComponentBuilder("§b[Cameron] §cThis server is offline.").create());
+                }
+            }));
         } else {
             PluginMessageHandler.sendPluginMessage(player.getServer().getInfo(), "teleport-player", player.getUniqueId().toString(), world, x, y, z, pitch, yaw);
         }

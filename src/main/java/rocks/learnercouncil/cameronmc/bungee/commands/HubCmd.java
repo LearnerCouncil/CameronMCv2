@@ -25,6 +25,7 @@ public class HubCmd extends Command {
                 return;
             }
             plugin.getProxy().getPluginManager().dispatchCommand(p, "join Hub", null);
+            return;
         }
 
         plugin.getLogger().warning("§b[Cameron] §cNeeds to be executed by a player");

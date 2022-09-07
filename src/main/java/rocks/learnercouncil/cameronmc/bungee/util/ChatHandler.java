@@ -68,14 +68,19 @@ public class ChatHandler {
 
     public static boolean hasMessage(UUID id, String message) {
         if(!messages.containsKey(id)) return false;
-        for(ChatMessage m : messages.get(id)) {
+        List<ChatMessage> msgs = messages.get(id);
+        for(ChatMessage m : msgs) {
             if(m.contains(message))
                 return true;
         }
         return false;
     }
 
-    public static List<ChatMessage> emptyList() {
+    public static void clearMessageHistory(ProxiedPlayer p) {
+        messages.put(p.getUniqueId(), emptyList());
+    }
+
+    private static List<ChatMessage> emptyList() {
         return new ArrayList<>(Collections.nCopies(100, new ChatMessage("")));
     }
 

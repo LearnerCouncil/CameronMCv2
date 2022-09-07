@@ -4,13 +4,11 @@ import dev.simplix.protocolize.api.Direction;
 import dev.simplix.protocolize.api.listener.AbstractPacketListener;
 import dev.simplix.protocolize.api.listener.PacketReceiveEvent;
 import dev.simplix.protocolize.api.listener.PacketSendEvent;
-import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.protocol.packet.Chat;
 import rocks.learnercouncil.cameronmc.bungee.util.ChatHandler;
 import rocks.learnercouncil.cameronmc.bungee.util.ChatMessage;
 import rocks.learnercouncil.cameronmc.bungee.util.CommandSpyHandler;
 
-import java.lang.reflect.Proxy;
 import java.util.UUID;
 
 public class UpstreamChat extends AbstractPacketListener<Chat> {
@@ -22,7 +20,8 @@ public class UpstreamChat extends AbstractPacketListener<Chat> {
     @Override
     public void packetReceive(PacketReceiveEvent<Chat> packetReceiveEvent) {
         Chat packet = packetReceiveEvent.packet();
-        CommandSpyHandler.sendMessage(packetReceiveEvent.player().uniqueId(), packet.getMessage());
+        if(packet.getMessage().startsWith("/"))
+            CommandSpyHandler.sendMessage(packetReceiveEvent.player().uniqueId(), packet.getMessage());
     }
 
     @Override

@@ -11,10 +11,10 @@ import rocks.learnercouncil.cameronmc.bungee.util.CommandSpyHandler;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 
 public class CameronCmd extends Command implements TabExecutor {
     private static final CameronMC plugin = CameronMC.getInstance();
+
     public CameronCmd() {
         super("cameronbungee", "cameron.commands.cameronbungee", "cameronmcbungee", "cameronb");
     }
@@ -42,19 +42,15 @@ public class CameronCmd extends Command implements TabExecutor {
                     CommandSpyHandler.reloadSpies();
                     p.sendMessage(new ComponentBuilder("§b[Cameron] §aConfig reloaded.").create());
                     return;
-                } else if(args[0].equalsIgnoreCase("debug")) {
-                    if(!p.hasPermission("cameron.commands.cameronbungee.debug")) {
+                } else if(args[0].equalsIgnoreCase("clearchat")) {
+                    if(!p.hasPermission("cameron.commands.cameronbungee.clearchat")) {
                         p.sendMessage(new ComponentBuilder("§b[Cameron] §c You don't have permission to execute this command.").create());
                         return;
                     }
-                    if(plugin.getLogger().getLevel() == Level.INFO) {
-                        plugin.getLogger().setLevel(Level.FINE);
-                        p.sendMessage(new ComponentBuilder("§b[Cameron] §aDebug logging enabled.").create());
-                    } else {
-                        plugin.getLogger().setLevel(Level.INFO);
-                        p.sendMessage(new ComponentBuilder("§b[Cameron] §aDebug logging disabled.").create());
-                    }
-                    return;
+                    plugin.getProxy().getPlayers().forEach(player -> {
+                        ChatHandler.clearMessageHistory(player);
+                        ChatHandler.resend(player.getUniqueId());
+                    });
                 }
                 p.sendMessage(new ComponentBuilder("§b[Cameron] §cInvalid arguments").create());
                 return;

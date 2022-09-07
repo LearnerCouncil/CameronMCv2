@@ -36,6 +36,8 @@ public final class CameronMC extends Plugin {
         navigatorCfg = new ConfigFile(this, "navigator.yml");
         cfg = new ConfigFile(this, "bungee_config.yml");
 
+        CommandSpyHandler.reloadSpies();
+
         getProxy().registerChannel("cameron:main");
         PluginManager manager = getProxy().getPluginManager();
         manager.registerListener(this, new PluginMessageHandler());
