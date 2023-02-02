@@ -3,9 +3,15 @@ package rocks.learnercouncil.cameronmc.bungee.util;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.config.ServerInfo;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PluginMessageEvent;
 import net.md_5.bungee.api.plugin.Listener;
+import net.md_5.bungee.chat.ComponentSerializer;
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.event.EventHandler;
 import rocks.learnercouncil.cameronmc.bungee.CameronMC;
@@ -14,6 +20,7 @@ import java.util.Arrays;
 import java.util.UUID;
 import java.util.logging.Level;
 
+@SuppressWarnings("UnstableApiUsage")
 public class PluginMessageHandler implements Listener {
     private static final CameronMC plugin = CameronMC.getInstance();
 
@@ -49,6 +56,22 @@ public class PluginMessageHandler implements Listener {
             cfg.set(entry + ".pitch", in.readUTF());
             cfg.set(entry + ".yaw", in.readUTF());
             plugin.navigatorCfg.saveConfig();
+        } else if(subchannel.equals("chat-message")) {
+            String msg = in.readUTF();
+            for(ProxiedPlayer p : plugin.getProxy().getPlayers()) {
+                ComponentBuilder builder = new ComponentBuilder(msg);
+                String stripped = ComponentSerializer.toString(builder.create());
+                int hashCode = ComponentSerializer.toString(builder.create()).hashCode();
+                ComponentBuilder delBuilder = new ComponentBuilder(builder);
+                delBuilder.append(" [x]").color(ChatColor.RED).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/cameronb deleteMessage " + hashCode));
+                String message = ComponentSerializer.toString(delBuilder.create());
+                ChatMessage cm = new ChatMessage(message, stripped);
+                ChatHandler.addMessage(p.getUniqueId(), cm);
+                if(p.hasPermission("cameron.chat.delete"))
+                    p.sendMessage(delBuilder.create());
+                else
+                    p.sendMessage(builder.create());
+            }
         }
     }
 }

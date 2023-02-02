@@ -3,6 +3,7 @@ package rocks.learnercouncil.cameronmc.spigot;
 import org.bukkit.plugin.java.JavaPlugin;
 import rocks.learnercouncil.cameronmc.spigot.commands.CameronCmd;
 import rocks.learnercouncil.cameronmc.spigot.commands.SkullCmd;
+import rocks.learnercouncil.cameronmc.spigot.events.PlayerChat;
 import rocks.learnercouncil.cameronmc.spigot.events.PlayerJoin;
 import rocks.learnercouncil.cameronmc.spigot.events.PlayerLeave;
 import rocks.learnercouncil.cameronmc.spigot.util.PluginMessageHandler;
@@ -21,10 +22,16 @@ public class CameronMC extends JavaPlugin {
         instance = this;
         getLogger().setLevel(Level.FINE);
         getLogger().info("CameronMC (Spigot) started.");
-        checkIfBungee();
+        checkIfValid();
+        saveDefaultConfig();
+
+        PlayerChat.chatStyle = getConfig().getString("chat-style");
+        PlayerChat.enabled = getConfig().getBoolean("global-chat");
+
         getServer().getMessenger().registerOutgoingPluginChannel(this, "cameron:main");
         getServer().getMessenger().registerIncomingPluginChannel(this, "cameron:main", new PluginMessageHandler());
 
+        getServer().getPluginManager().registerEvents(new PlayerChat(), this);
         getServer().getPluginManager().registerEvents(new PlayerJoin(), this);
         getServer().getPluginManager().registerEvents(new PlayerLeave(), this);
 
@@ -39,7 +46,7 @@ public class CameronMC extends JavaPlugin {
 
     }
 
-    private void checkIfBungee()
+    private void checkIfValid()
     {
         if ( !getServer().spigot().getConfig().getBoolean( "settings.bungeecord" ) )
         {
