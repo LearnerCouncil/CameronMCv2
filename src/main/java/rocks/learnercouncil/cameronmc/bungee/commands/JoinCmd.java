@@ -7,7 +7,6 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.TabExecutor;
 import rocks.learnercouncil.cameronmc.bungee.CameronMC;
-import rocks.learnercouncil.cameronmc.bungee.events.ServerConnected;
 import rocks.learnercouncil.cameronmc.bungee.util.PluginMessageHandler;
 
 import java.util.ArrayList;
@@ -57,14 +56,18 @@ public class JoinCmd extends Command implements TabExecutor {
     }
 
     private void sendPlayer(ProxiedPlayer player, ServerInfo server, String world, String x, String y, String z, String pitch, String yaw) {
+        if(server == null) {
+            player.sendMessage(new ComponentBuilder("§b[Cameron] §cThis server is offline.").create());
+            return;
+        }
         if(!player.getServer().getInfo().getName().equals(server.getName())) {
             server.ping(((result, error) -> {
-                if(error == null) {
-                    ServerConnected.queuedPlayers.put(player, () -> PluginMessageHandler.sendPluginMessage(server, "teleport-player", player.getUniqueId().toString(), world, x, y, z, pitch, yaw));
-                    player.connect(server);
-                } else {
+                if (error != null) {
                     player.sendMessage(new ComponentBuilder("§b[Cameron] §cThis server is offline.").create());
+                    return;
                 }
+                PluginMessageHandler.sendPluginMessage(server, "teleport-player", player.getUniqueId().toString(), world, x, y, z, pitch, yaw);
+                player.connect(server);
             }));
         } else {
             PluginMessageHandler.sendPluginMessage(player.getServer().getInfo(), "teleport-player", player.getUniqueId().toString(), world, x, y, z, pitch, yaw);

@@ -5,7 +5,6 @@ import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.plugin.PluginManager;
 import rocks.learnercouncil.cameronmc.bungee.commands.*;
 import rocks.learnercouncil.cameronmc.bungee.events.PlayerJoin;
-import rocks.learnercouncil.cameronmc.bungee.events.ServerConnected;
 import rocks.learnercouncil.cameronmc.bungee.protocol.UpstreamChat;
 import rocks.learnercouncil.cameronmc.bungee.protocol.DownstreamChat;
 import rocks.learnercouncil.cameronmc.bungee.util.CommandSpyHandler;
@@ -41,7 +40,6 @@ public final class CameronMC extends Plugin {
         getProxy().registerChannel("cameron:main");
         PluginManager manager = getProxy().getPluginManager();
         manager.registerListener(this, new PluginMessageHandler());
-        manager.registerListener(this, new ServerConnected());
         manager.registerListener(this, new PlayerJoin());
         manager.registerListener(this, new CommandSpyHandler());
 

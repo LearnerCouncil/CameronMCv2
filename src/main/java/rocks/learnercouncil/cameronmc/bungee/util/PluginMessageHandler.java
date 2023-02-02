@@ -36,7 +36,7 @@ public class PluginMessageHandler implements Listener {
         Arrays.stream(message).forEach(out::writeUTF);
 
         server.sendData("cameron:main", out.toByteArray());
-        plugin.getLogger().fine("(PluginMessageHandler) Plugin message " + subchannel + " received.");
+        plugin.getLogger().info("(PluginMessageHandler) Plugin message " + subchannel + " sent.");
     }
 
     @EventHandler

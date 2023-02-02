@@ -8,6 +8,8 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.NotNull;
 import rocks.learnercouncil.cameronmc.spigot.CameronMC;
 import rocks.learnercouncil.cameronmc.spigot.events.PlayerJoin;
 
@@ -23,30 +25,40 @@ public class PluginMessageHandler implements PluginMessageListener {
         out.writeUTF(subchannel);
         Arrays.stream(message).forEach(out::writeUTF);
         p.sendPluginMessage(plugin, "cameron:main", out.toByteArray());
-        plugin.getLogger().fine("(PluginMessageHandler) Plugin message " + subchannel + " sent.");
     }
     @Override
-    public void onPluginMessageReceived(String channel, Player player, byte[] message) {
+    public void onPluginMessageReceived(String channel, @NotNull Player player, byte[] message) {
         if(!(channel.equals("cameron:main"))) return;
         ByteArrayDataInput in = ByteStreams.newDataInput(message);
         String subchannel = in.readUTF();
-        plugin.getLogger().fine("(PluginMessageHandler) Plugin message " + subchannel + " received.");
         if(subchannel.equalsIgnoreCase("teleport-player")) {
-            Player p = Bukkit.getPlayer(UUID.fromString(in.readUTF()));
-            if(p == null) return;
+            UUID uuid = UUID.fromString(in.readUTF());
             World world = Bukkit.getServer().getWorld(in.readUTF());
             double x = Double.parseDouble(in.readUTF());
             double y = Double.parseDouble(in.readUTF());
             double z = Double.parseDouble(in.readUTF());
             float pitch = Float.parseFloat(in.readUTF());
             float yaw = Float.parseFloat(in.readUTF());
-            String newServer = in.readUTF();
-            if(newServer.equals("true"))
-                PlayerJoin.queueTeleport(p, new Location(world, x, y, z, yaw, pitch));
-            else
-                p.teleport(new Location(world, x, y, z, yaw, pitch));
-            plugin.getLogger().fine("(PluginMessageHandler) Teleporting " + p.getName() + ", World: " + world + ", XYZ: " + x + ", " + y + ", " + z + ", Rotation: " + yaw + ", " + pitch);
+            Location location = new Location(world, x, y, z, yaw, pitch);
+            teleport(uuid, location);
         }
+    }
+
+    private void teleport(UUID uuid, Location location) {
+        Player player = Bukkit.getPlayer(uuid);
+        if(player != null) {
+            player.teleport(location);
+            return;
+        }
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                Player player = Bukkit.getPlayer(uuid);
+                if(player == null) return;
+                player.teleport(location);
+                cancel();
+            }
+        }.runTaskTimer(plugin, 0, 20);
 
     }
 }
