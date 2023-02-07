@@ -51,9 +51,11 @@ public class PluginMessageHandler implements PluginMessageListener {
             return;
         }
         new BukkitRunnable() {
+            int failsafe = 0;
             @Override
             public void run() {
                 Player player = Bukkit.getPlayer(uuid);
+                if(failsafe++ >= 15) cancel();
                 if(player == null) return;
                 player.teleport(location);
                 cancel();
