@@ -1,6 +1,7 @@
 package rocks.learnercouncil.cameronmc.bungee.util;
 
 import lombok.Getter;
+import net.md_5.bungee.api.config.ServerInfo;
 import rocks.learnercouncil.cameronmc.bungee.CameronMC;
 
 import java.util.Collection;
@@ -17,9 +18,10 @@ public class NavigatorLocation {
         return Optional.ofNullable(locations.get(name));
     }
 
-    private final @Getter String server, world, x, y, z, pitch, yaw;
+    private final @Getter ServerInfo server;
+    private final @Getter String world, x, y, z, pitch, yaw;
 
-    public NavigatorLocation(String server, String world, String x, String y, String z, String pitch, String yaw) {
+    public NavigatorLocation(ServerInfo server, String world, String x, String y, String z, String pitch, String yaw) {
         this.server = server;
         this.world = world;
         this.x = x;
@@ -34,7 +36,7 @@ public class NavigatorLocation {
         Collection<String> locationNames = plugin.navigatorCfg.getConfig().getKeys();
         for(String key : locationNames) {
             locations.put(key, new NavigatorLocation(
-                     plugin.navigatorCfg.getConfig().getString(key + ".server"),
+                     plugin.getProxy().getServerInfo(plugin.navigatorCfg.getConfig().getString(key + ".server")),
                      plugin.navigatorCfg.getConfig().getString(key + ".world"),
                      getConfigString(key, "x", false),
                      getConfigString(key, "y", false),
