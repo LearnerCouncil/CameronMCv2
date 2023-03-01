@@ -32,7 +32,7 @@ public class NavigatorLocation {
     }
 
     public static void initialize() {
-        locations = new LinkedHashMap<>();
+        locations = new HashMap<>();
         Collection<String> locationNames = plugin.navigatorCfg.getConfig().getKeys();
         for(String key : locationNames) {
             locations.put(key, new NavigatorLocation(

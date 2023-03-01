@@ -68,7 +68,7 @@ public class JoinCmd extends Command implements TabExecutor {
     public Iterable<String> onTabComplete(CommandSender sender, String[] args) {
         List<String> completions = new ArrayList<>();
         if(args.length == 1) {
-            List<String> arguments = new ArrayList<>(plugin.navigatorCfg.getConfig().getKeys());
+            List<String> arguments = new ArrayList<>(NavigatorLocation.getLocations().keySet());
             arguments.stream().filter(s -> s.toLowerCase().startsWith(args[0].toLowerCase())).forEach(completions::add);
             return completions;
         }

@@ -9,6 +9,7 @@ import rocks.learnercouncil.cameronmc.bungee.protocol.UpstreamChat;
 import rocks.learnercouncil.cameronmc.bungee.protocol.DownstreamChat;
 import rocks.learnercouncil.cameronmc.bungee.util.CommandSpyHandler;
 import rocks.learnercouncil.cameronmc.bungee.util.ConfigFile;
+import rocks.learnercouncil.cameronmc.bungee.util.NavigatorLocation;
 import rocks.learnercouncil.cameronmc.bungee.util.PluginMessageHandler;
 
 import java.util.logging.Level;
@@ -36,6 +37,7 @@ public final class CameronMC extends Plugin {
         cfg = new ConfigFile(this, "bungee_config.yml");
 
         CommandSpyHandler.reloadSpies();
+        NavigatorLocation.initialize();
 
         getProxy().registerChannel("cameron:main");
         PluginManager manager = getProxy().getPluginManager();
