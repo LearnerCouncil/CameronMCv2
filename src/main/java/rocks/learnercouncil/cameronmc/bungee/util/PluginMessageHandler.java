@@ -6,7 +6,6 @@ import com.google.common.io.ByteStreams;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PluginMessageEvent;
@@ -18,7 +17,6 @@ import rocks.learnercouncil.cameronmc.bungee.CameronMC;
 
 import java.util.Arrays;
 import java.util.UUID;
-import java.util.logging.Level;
 
 @SuppressWarnings("UnstableApiUsage")
 public class PluginMessageHandler implements Listener {
@@ -36,7 +34,6 @@ public class PluginMessageHandler implements Listener {
         Arrays.stream(message).forEach(out::writeUTF);
 
         server.sendData("cameron:main", out.toByteArray());
-        //plugin.getLogger().info("(PluginMessageHandler) Plugin message " + subchannel + " sent.");
     }
 
     @EventHandler
@@ -44,7 +41,6 @@ public class PluginMessageHandler implements Listener {
         if(!(e.getTag().equals("cameron:main"))) return;
         ByteArrayDataInput in = ByteStreams.newDataInput(e.getData());
         String subchannel = in.readUTF();
-        //plugin.getLogger().fine("(PluginMessageHandler) Plugin message " + subchannel + " received.");
         if(subchannel.equals("set-navigator")) {
             Configuration cfg = plugin.navigatorCfg.getConfig();
             String entry = in.readUTF();

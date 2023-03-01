@@ -6,7 +6,6 @@ import rocks.learnercouncil.cameronmc.bungee.CameronMC;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Optional;
 
 public class NavigatorLocation {

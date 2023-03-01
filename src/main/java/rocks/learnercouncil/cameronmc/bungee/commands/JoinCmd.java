@@ -40,6 +40,7 @@ public class JoinCmd extends Command implements TabExecutor {
                 }
                 NavigatorLocation location = locationOptional.get();
                 sendPlayer(p, location.getServer(), location);
+                return;
             }
             p.sendMessage(new ComponentBuilder("§b[Cameron] §cToo many arguments!").create());
             return;
@@ -61,7 +62,7 @@ public class JoinCmd extends Command implements TabExecutor {
                 player.connect(server);
             }));
         }
-        PluginMessageHandler.sendPluginMessage(player.getServer().getInfo(), "teleport-player", player.getUniqueId().toString(), location.getWorld(), location.getX(), location.getY(), location.getZ(), location.getPitch(), location.getYaw());
+        PluginMessageHandler.sendPluginMessage(server, "teleport-player", player.getUniqueId().toString(), location.getWorld(), location.getX(), location.getY(), location.getZ(), location.getPitch(), location.getYaw());
     }
 
     @Override
