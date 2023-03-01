@@ -7,6 +7,8 @@ import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 import rocks.learnercouncil.cameronmc.bungee.CameronMC;
 import rocks.learnercouncil.cameronmc.bungee.util.ChatHandler;
+import rocks.learnercouncil.cameronmc.bungee.util.NavigatorLocation;
+import rocks.learnercouncil.cameronmc.bungee.util.PluginMessageHandler;
 
 public class PlayerJoin implements Listener {
 
@@ -18,9 +20,19 @@ public class PlayerJoin implements Listener {
         ProxiedPlayer p = e.getPlayer();
         ChatHandler.clearMessageHistory(p);
 
+        sendToHub(p);
+
         if(e.getPlayer().getPendingConnection().getVirtualHost().getHostString().equals("play.learnercouncil.rocks"))
             p.sendMessage(new ComponentBuilder("§4§lATTENTION! §c§lYou connected to the server using §f§lplay.learnercouncil.rocks§c§l, that server address works for now, but it won't for long! In the future, please connect using §f§lmc.learnercouncil.rocks§c§l, Thank you.").create());
         else if(!e.getPlayer().getPendingConnection().getVirtualHost().getHostString().contains("learnercouncil.rocks"))
             p.sendMessage(new ComponentBuilder("§4§lATTENTION! §c§lYou connected to the server using a unknown address, that address is not controlled by us and may be unsafe. In the future, please connect using §f§lmc.learnercouncil.rocks§c§l, Thank you.").create());
+    }
+
+    private void sendToHub(ProxiedPlayer player) {
+        NavigatorLocation.get("Hub").ifPresent(hub -> hub.getServer().ping((result, error) -> {
+            if(error != null) return;
+            player.connect(hub.getServer());
+            PluginMessageHandler.sendPluginMessage(hub.getServer(), "teleport-player", player.getUniqueId().toString(), hub.getWorld(), hub.getX(), hub.getY(), hub.getZ(), hub.getPitch(), hub.getYaw());
+        }));
     }
 }

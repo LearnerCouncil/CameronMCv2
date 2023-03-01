@@ -13,7 +13,6 @@ import rocks.learnercouncil.cameronmc.bungee.util.PluginMessageHandler;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class JoinCmd extends Command implements TabExecutor {
     private static final CameronMC plugin = CameronMC.getInstance();
@@ -59,16 +58,10 @@ public class JoinCmd extends Command implements TabExecutor {
                     player.sendMessage(new ComponentBuilder("§b[Cameron] §cThis server is offline.").create());
                     return;
                 }
-                PluginMessageHandler.sendPluginMessage(server, "teleport-player", player.getUniqueId().toString(), location.getWorld(), location.getX(), location.getY(), location.getZ(), location.getPitch(), location.getYaw());
                 player.connect(server);
             }));
-        } else {
-            PluginMessageHandler.sendPluginMessage(player.getServer().getInfo(), "teleport-player", player.getUniqueId().toString(), location.getWorld(), location.getX(), location.getY(), location.getZ(), location.getPitch(), location.getYaw());
         }
-    }
-
-    private String getConfigString(String path) {
-        return plugin.navigatorCfg.getConfig().getString(path);
+        PluginMessageHandler.sendPluginMessage(player.getServer().getInfo(), "teleport-player", player.getUniqueId().toString(), location.getWorld(), location.getX(), location.getY(), location.getZ(), location.getPitch(), location.getYaw());
     }
 
     @Override
