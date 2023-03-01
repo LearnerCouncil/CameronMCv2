@@ -10,6 +10,8 @@ public class PlayerJoin implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
         e.setJoinMessage("");
-        Bukkit.getOnlinePlayers().stream().filter(p -> p.hasPermission("cameron.view-connection-messages")).forEach(p -> p.sendMessage("§e" + e.getPlayer().getName() + " joined the game"));
+        Bukkit.getOnlinePlayers().stream()
+                .filter(p -> p.hasPermission("cameron.view-connection-messages"))
+                .forEach(p -> p.sendMessage("§e" + e.getPlayer().getName() + " joined the game"));
     }
 }

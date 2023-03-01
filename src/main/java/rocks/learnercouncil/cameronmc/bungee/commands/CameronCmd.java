@@ -67,7 +67,7 @@ public class CameronCmd extends Command implements TabExecutor {
             p.sendMessage(new ComponentBuilder("§b[Cameron] §cToo many arguments!").create());
             return;
         }
-        plugin.getLogger().warning("§b[Cameron] §cMust be executed by a player.");
+        plugin.getLogger().warning("§b[Cameron] §c'/cameronb' Must be executed by a player.");
     }
 
     @Override

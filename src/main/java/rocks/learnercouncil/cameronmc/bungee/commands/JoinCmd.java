@@ -7,12 +7,12 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.TabExecutor;
 import rocks.learnercouncil.cameronmc.bungee.CameronMC;
-import rocks.learnercouncil.cameronmc.bungee.events.ServerConnected;
+import rocks.learnercouncil.cameronmc.bungee.util.NavigatorLocation;
 import rocks.learnercouncil.cameronmc.bungee.util.PluginMessageHandler;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 public class JoinCmd extends Command implements TabExecutor {
     private static final CameronMC plugin = CameronMC.getInstance();
@@ -33,21 +33,13 @@ public class JoinCmd extends Command implements TabExecutor {
                 return;
             }
             if(args.length == 1) {
-                List<String> keys = plugin.navigatorCfg.getConfig().getKeys().stream().filter(s -> s.equalsIgnoreCase(args[0])).collect(Collectors.toList());
-                if(!keys.isEmpty()) {
-                    String key = keys.get(0);
-                    ServerInfo server = plugin.getProxy().getServerInfo(getConfigString(key + ".server"));
-                    String world = getConfigString(key + ".world");
-                    String x = getConfigString(key + ".x");
-                    String y = getConfigString(key + ".y");
-                    String z = getConfigString(key + ".z");
-                    String pitch = getConfigString(key + ".pitch");
-                    String yaw = getConfigString(key + ".yaw");
-                    p.sendMessage(new ComponentBuilder("§b[Cameron] §aSending you to \"" + (key) + "\" now...").create());
-                    sendPlayer(p, server, world, x, y, z, pitch, yaw);
+                Optional<NavigatorLocation> locationOptional = NavigatorLocation.get(args[0]);
+                if(!locationOptional.isPresent()) {
+                    p.sendMessage(new ComponentBuilder("§b[Cameron] §cThe location \"" + args[0] + "\" does not exist.").create());
                     return;
                 }
-                p.sendMessage(new ComponentBuilder("§b[Cameron] §cThe location \"" + args[0] + "\" does not exist.").create());
+                NavigatorLocation location = locationOptional.get();
+                sendPlayer(p, location.getServer(), location);
                 return;
             }
             p.sendMessage(new ComponentBuilder("§b[Cameron] §cToo many arguments!").create());
@@ -56,30 +48,28 @@ public class JoinCmd extends Command implements TabExecutor {
         plugin.getLogger().warning("§b[Cameron] §cNeeds to be executed by a player");
     }
 
-    private void sendPlayer(ProxiedPlayer player, ServerInfo server, String world, String x, String y, String z, String pitch, String yaw) {
+    private void sendPlayer(ProxiedPlayer player, ServerInfo server, NavigatorLocation location) {
+        if(server == null) {
+            player.sendMessage(new ComponentBuilder("§b[Cameron] §cThis server is offline.").create());
+            return;
+        }
         if(!player.getServer().getInfo().getName().equals(server.getName())) {
             server.ping(((result, error) -> {
-                if(error == null) {
-                    ServerConnected.queuedPlayers.put(player, () -> PluginMessageHandler.sendPluginMessage(server, "teleport-player", player.getUniqueId().toString(), world, x, y, z, pitch, yaw));
-                    player.connect(server);
-                } else {
+                if (error != null) {
                     player.sendMessage(new ComponentBuilder("§b[Cameron] §cThis server is offline.").create());
+                    return;
                 }
+                player.connect(server);
             }));
-        } else {
-            PluginMessageHandler.sendPluginMessage(player.getServer().getInfo(), "teleport-player", player.getUniqueId().toString(), world, x, y, z, pitch, yaw);
         }
-    }
-
-    private String getConfigString(String path) {
-        return plugin.navigatorCfg.getConfig().getString(path);
+        PluginMessageHandler.sendPluginMessage(server, "teleport-player", player.getUniqueId().toString(), location.getWorld(), location.getX(), location.getY(), location.getZ(), location.getPitch(), location.getYaw());
     }
 
     @Override
     public Iterable<String> onTabComplete(CommandSender sender, String[] args) {
         List<String> completions = new ArrayList<>();
         if(args.length == 1) {
-            List<String> arguments = new ArrayList<>(plugin.navigatorCfg.getConfig().getKeys());
+            List<String> arguments = new ArrayList<>(NavigatorLocation.getLocations().keySet());
             arguments.stream().filter(s -> s.toLowerCase().startsWith(args[0].toLowerCase())).forEach(completions::add);
             return completions;
         }

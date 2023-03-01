@@ -28,6 +28,6 @@ public class HubCmd extends Command {
             return;
         }
 
-        plugin.getLogger().warning("§b[Cameron] §cNeeds to be executed by a player");
+        plugin.getLogger().warning("§b[Cameron] §c'/hub' needs to be executed by a player");
     }
 }
