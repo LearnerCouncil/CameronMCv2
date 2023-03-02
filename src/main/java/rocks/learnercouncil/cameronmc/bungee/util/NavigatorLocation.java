@@ -14,7 +14,8 @@ public class NavigatorLocation {
     private static @Getter HashMap<String, NavigatorLocation> locations = new HashMap<>();
 
     public static Optional<NavigatorLocation> get(String name) {
-        return Optional.ofNullable(locations.get(name));
+        return locations.keySet().stream().filter(k -> k.equalsIgnoreCase(name)).findFirst().map(s -> locations.get(s));
+
     }
 
     private final @Getter ServerInfo server;
