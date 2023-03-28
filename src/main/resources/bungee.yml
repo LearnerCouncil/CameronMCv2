@@ -3,5 +3,3 @@ version: '${project.version}'
 main: rocks.learnercouncil.cameronmc.bungee.CameronMC
 description: A general purpose plugin made for the Learner Server
 author: h2ofiremaster
-depends:
-  - Protocolize

@@ -10,6 +10,8 @@ public class PlayerLeave implements Listener {
     @EventHandler
     public void onPlayerLeave(PlayerQuitEvent e) {
         e.setQuitMessage("");
-        Bukkit.getOnlinePlayers().stream().filter(p -> p.hasPermission("cameron.view-connection-messages")).forEach(p -> p.sendMessage("§e" + e.getPlayer().getName() + " left the game"));
+        Bukkit.getOnlinePlayers().stream()
+                .filter(p -> p.hasPermission("cameron.view-connection-messages"))
+                .forEach(p -> p.sendMessage("§e" + e.getPlayer().getName() + " left the game"));
     }
 }

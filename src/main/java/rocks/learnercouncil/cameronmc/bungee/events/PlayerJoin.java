@@ -7,7 +7,6 @@ import net.md_5.bungee.api.event.ServerConnectEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 import rocks.learnercouncil.cameronmc.bungee.CameronMC;
-import rocks.learnercouncil.cameronmc.bungee.util.ChatHandler;
 import rocks.learnercouncil.cameronmc.bungee.util.NavigatorLocation;
 import rocks.learnercouncil.cameronmc.bungee.util.PluginMessageHandler;
 
@@ -19,7 +18,6 @@ public class PlayerJoin implements Listener {
     public void onPlayerJoin(ServerConnectEvent e) {
         if(!e.getReason().equals(ServerConnectEvent.Reason.JOIN_PROXY)) return;
         ProxiedPlayer p = e.getPlayer();
-        ChatHandler.clearMessageHistory(p);
         sendToHub(p, e.getTarget());
 
         if(e.getPlayer().getPendingConnection().getVirtualHost().getHostString().equals("play.learnercouncil.rocks"))

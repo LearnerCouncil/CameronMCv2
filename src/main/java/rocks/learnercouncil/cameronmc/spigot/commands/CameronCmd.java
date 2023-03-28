@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
 import rocks.learnercouncil.cameronmc.spigot.CameronMC;
-import rocks.learnercouncil.cameronmc.spigot.util.PluginMessageHandler;
+import rocks.learnercouncil.cameronmc.spigot.PluginMessageHandler;
 
 import java.util.ArrayList;
 import java.util.List;

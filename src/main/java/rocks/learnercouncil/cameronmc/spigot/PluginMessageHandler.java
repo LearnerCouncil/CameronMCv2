@@ -1,4 +1,4 @@
-package rocks.learnercouncil.cameronmc.spigot.util;
+package rocks.learnercouncil.cameronmc.spigot;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
@@ -10,8 +10,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
-import rocks.learnercouncil.cameronmc.spigot.CameronMC;
-import rocks.learnercouncil.cameronmc.spigot.events.PlayerJoin;
 
 import java.util.Arrays;
 import java.util.UUID;
