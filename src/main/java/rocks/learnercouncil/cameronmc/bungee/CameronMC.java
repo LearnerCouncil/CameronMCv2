@@ -37,7 +37,6 @@ public final class CameronMC extends Plugin {
 
         manager.registerCommand(this, new JoinCmd());
         manager.registerCommand(this, new CameronCmd());
-        manager.registerCommand(this, new LCMsgCmd());
         manager.registerCommand(this, new HubCmd());
     }
 
