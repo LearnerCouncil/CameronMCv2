@@ -1,10 +1,11 @@
 package rocks.learnercouncil.cameronmc.bungee.commands;
 
 import net.md_5.bungee.api.CommandSender;
-import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 import rocks.learnercouncil.cameronmc.bungee.CameronMC;
+
+import static rocks.learnercouncil.cameronmc.common.CommandResult.*;
 
 public class HubCmd extends Command {
 
@@ -17,16 +18,17 @@ public class HubCmd extends Command {
     @Override
     public void execute(CommandSender sender, String[] args) {
         if(!plugin.navigatorCfg.getConfig().contains("Hub")) return;
-        if(sender instanceof ProxiedPlayer) {
-            ProxiedPlayer p = (ProxiedPlayer) sender;
-            if(!p.hasPermission("cameron.commands.join")) {
-                p.sendMessage(new ComponentBuilder("§b[Cameron] §c You don't have permission to execute this command.").create());
-                return;
-            }
-            plugin.getProxy().getPluginManager().dispatchCommand(p, "join Hub", null);
+        if (!(sender instanceof ProxiedPlayer)) {
+            sender.sendMessage(needsPlayer("/hub"));
             return;
         }
+        ProxiedPlayer p = (ProxiedPlayer) sender;
+        if (!p.hasPermission("cameron.commands.join")) {
+            p.sendMessage(NO_PERMISSION);
+            return;
+        }
+        plugin.getProxy().getPluginManager().dispatchCommand(p, "join Hub", null);
+        return;
 
-        plugin.getLogger().warning("§b[Cameron] §c'/hub' needs to be executed by a player");
     }
 }
