@@ -10,6 +10,7 @@ import rocks.learnercouncil.cameronmc.bungee.util.NavigatorLocation;
 import rocks.learnercouncil.cameronmc.bungee.util.PluginMessageHandler;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -74,6 +75,6 @@ public class JoinCmd extends Command implements TabExecutor {
             arguments.stream().filter(s -> s.toLowerCase().startsWith(args[0].toLowerCase())).forEach(completions::add);
             return completions;
         }
-        return new ArrayList<>();
+        return Collections.emptyList();
     }
 }

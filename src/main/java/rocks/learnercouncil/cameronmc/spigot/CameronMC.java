@@ -10,6 +10,7 @@ public class CameronMC extends JavaPlugin {
 
     @Getter private static CameronMC instance;
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public void onEnable() {
         instance = this;

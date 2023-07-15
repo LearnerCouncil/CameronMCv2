@@ -23,6 +23,9 @@ public class CommandResult {
     public static BaseComponent[] locationSet(String world, String x, String y, String z, String yaw, String pitch) {
         return result("Navicator location set. (World: " + world + ", XYZ: " + x + ", " + y + ", " + z + ", Angle: " + yaw + ", " + pitch + ")");
     }
+    public static BaseComponent[] speedSet(String speed) {
+        return prefix().append("Set your flying speed to '").color(GREEN).append(speed).color(YELLOW).append("'.").color(GREEN).create();
+    }
     
     public static final BaseComponent[]
             NO_PERMISSION = error("Sorry, but you don't have permission to execute this command."),
@@ -30,13 +33,17 @@ public class CommandResult {
             NOT_ENOUGH_ARGS = error("Not enough arguments."),
             INVALID_ARGS = error("Invalid arguments."),
             MUST_SPECIFY_LOCATION = error("You must specify a location."),
-            SERVER_OFFLINE = error("That server is offline.");
+            SERVER_OFFLINE = error("That server is offline."),
+            MUST_SPECIFY_SPEED = error("You must specify a flight speed.");
 
     public static BaseComponent[] needsPlayer(String command) {
         return error("'" + command + "' needs to be executed by a player.");
     }
     public static BaseComponent[] locationNotExist(String location) {
         return error("The location \"" + location + "\" does not exist.");
+    }
+    public static BaseComponent[] invalidNumber(String number) {
+        return prefix().append("'").color(RED).append(number).color(YELLOW).append("' is not a valid number.").color(RED).create();
     }
 
 }

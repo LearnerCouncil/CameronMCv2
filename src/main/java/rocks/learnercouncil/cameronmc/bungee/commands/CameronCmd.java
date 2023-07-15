@@ -6,6 +6,7 @@ import net.md_5.bungee.api.plugin.TabExecutor;
 import rocks.learnercouncil.cameronmc.bungee.CameronMC;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static rocks.learnercouncil.cameronmc.common.CommandResult.*;
@@ -48,6 +49,6 @@ public class CameronCmd extends Command implements TabExecutor {
             arguments.stream().filter(a -> a.toLowerCase().startsWith(args[0].toLowerCase())).forEach(completions::add);
             return completions;
         }
-        return new ArrayList<>();
+        return Collections.emptyList();
     }
 }

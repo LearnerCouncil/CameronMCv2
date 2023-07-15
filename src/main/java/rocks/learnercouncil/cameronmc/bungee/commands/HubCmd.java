@@ -3,11 +3,14 @@ package rocks.learnercouncil.cameronmc.bungee.commands;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
+import net.md_5.bungee.api.plugin.TabExecutor;
 import rocks.learnercouncil.cameronmc.bungee.CameronMC;
+
+import java.util.Collections;
 
 import static rocks.learnercouncil.cameronmc.common.CommandResult.*;
 
-public class HubCmd extends Command {
+public class HubCmd extends Command implements TabExecutor {
 
     private final CameronMC plugin = CameronMC.getInstance();
 
@@ -28,7 +31,10 @@ public class HubCmd extends Command {
             return;
         }
         plugin.getProxy().getPluginManager().dispatchCommand(p, "join Hub", null);
-        return;
+    }
 
+    @Override
+    public Iterable<String> onTabComplete(CommandSender sender, String[] args) {
+        return Collections.emptyList();
     }
 }

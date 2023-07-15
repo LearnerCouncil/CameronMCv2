@@ -13,6 +13,7 @@ import rocks.learnercouncil.cameronmc.spigot.CameronMC;
 import rocks.learnercouncil.cameronmc.spigot.PluginMessageHandler;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -34,7 +35,7 @@ public class CameronCmd implements CommandExecutor, TabCompleter {
             return true;
         }
         if (args.length < 1) {
-            p.spigot().sendMessage();
+            p.spigot().sendMessage(NOT_ENOUGH_ARGS);
             return true;
         }
         if (args[0].equalsIgnoreCase("setnavigator")) {
@@ -56,6 +57,20 @@ public class CameronCmd implements CommandExecutor, TabCompleter {
                     String.valueOf(l.getX()), String.valueOf(l.getY()), String.valueOf(l.getZ()),
                     String.valueOf(l.getYaw()), String.valueOf(l.getPitch())));
             return true;
+        } else if (args[0].equalsIgnoreCase("flyspeed")) {
+            if (args.length != 2) {
+                p.spigot().sendMessage(MUST_SPECIFY_SPEED);
+                return true;
+            }
+            float speed;
+            try {
+                speed = Float.parseFloat(args[1]);
+            } catch (NumberFormatException e) {
+                p.spigot().sendMessage(invalidNumber(args[1]));
+                return true;
+            }
+            p.setFlySpeed(speed);
+            p.spigot().sendMessage(speedSet(args[1]));
         }
         p.spigot().sendMessage(INVALID_ARGS);
         return true;
@@ -65,25 +80,16 @@ public class CameronCmd implements CommandExecutor, TabCompleter {
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
         List<String> arguments = new ArrayList<>();
         List<String> completions = new ArrayList<>();
-        Player p = null;
-        if(sender instanceof Player) {
-            p = (Player) sender;
-        }
         if (args.length == 1) {
-            if(p != null) {
-                if(p.hasPermission("cameron.commands.cameron.setnavigator"))
+                if(sender.hasPermission("cameron.commands.cameron")) {
                     arguments.add("setnavigator");
-                if(p.hasPermission("cameron.commands.cameron.debug"))
-                    arguments.add("debug");
-            } else {
-                arguments.add("setnavgator");
-                arguments.add("debug");
-            }
+                    arguments.add("flyspeed");
+                }
         }
         if(args.length > 0) {
             StringUtil.copyPartialMatches(args[args.length - 1], arguments, completions);
             return completions;
         }
-        return new ArrayList<>();
+        return Collections.emptyList();
     }
 }
