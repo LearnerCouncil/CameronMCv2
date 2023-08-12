@@ -3,8 +3,6 @@ version: '${project.version}'
 main: rocks.learnercouncil.cameronmc.spigot.CameronMC
 description: A general purpose plugin made for the Learner Server
 api-version: 1.17
-depend:
-  - PlaceholderAPI
 commands:
   cameron:
     aliases:

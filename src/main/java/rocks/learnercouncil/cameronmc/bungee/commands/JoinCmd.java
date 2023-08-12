@@ -1,7 +1,6 @@
 package rocks.learnercouncil.cameronmc.bungee.commands;
 
 import net.md_5.bungee.api.CommandSender;
-import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
@@ -11,8 +10,11 @@ import rocks.learnercouncil.cameronmc.bungee.util.NavigatorLocation;
 import rocks.learnercouncil.cameronmc.bungee.util.PluginMessageHandler;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+
+import static rocks.learnercouncil.cameronmc.common.CommandResult.*;
 
 public class JoinCmd extends Command implements TabExecutor {
     private static final CameronMC plugin = CameronMC.getInstance();
@@ -22,41 +24,41 @@ public class JoinCmd extends Command implements TabExecutor {
 
     @Override
     public void execute(CommandSender sender, String[] args) {
-        if(sender instanceof ProxiedPlayer) {
-            ProxiedPlayer p = (ProxiedPlayer) sender;
-            if(!p.hasPermission("cameron.commands.join")) {
-                p.sendMessage(new ComponentBuilder("§b[Cameron] §c You don't have permission to execute this command.").create());
-                return;
-            }
-            if(args.length < 1) {
-                p.sendMessage(new ComponentBuilder("§b[Cameron] §cYou must specify a location.").create());
-                return;
-            }
-            if(args.length == 1) {
-                Optional<NavigatorLocation> locationOptional = NavigatorLocation.get(args[0]);
-                if(!locationOptional.isPresent()) {
-                    p.sendMessage(new ComponentBuilder("§b[Cameron] §cThe location \"" + args[0] + "\" does not exist.").create());
-                    return;
-                }
-                NavigatorLocation location = locationOptional.get();
-                sendPlayer(p, location.getServer(), location);
-                return;
-            }
-            p.sendMessage(new ComponentBuilder("§b[Cameron] §cToo many arguments!").create());
+        if (!(sender instanceof ProxiedPlayer)) {
+            sender.sendMessage(needsPlayer("/join"));
             return;
         }
-        plugin.getLogger().warning("§b[Cameron] §cNeeds to be executed by a player");
+        ProxiedPlayer p = (ProxiedPlayer) sender;
+        if (!p.hasPermission("cameron.commands.join")) {
+            p.sendMessage(NO_PERMISSION);
+            return;
+        }
+        if (args.length < 1) {
+            p.sendMessage(MUST_SPECIFY_LOCATION);
+            return;
+        }
+        if (args.length != 1) {
+            p.sendMessage(TOO_MANY_ARGS);
+            return;
+        }
+        Optional<NavigatorLocation> locationOptional = NavigatorLocation.get(args[0]);
+        if (!locationOptional.isPresent()) {
+            p.sendMessage(locationNotExist(args[0]));
+            return;
+        }
+        NavigatorLocation location = locationOptional.get();
+        sendPlayer(p, location.getServer(), location);
     }
 
     private void sendPlayer(ProxiedPlayer player, ServerInfo server, NavigatorLocation location) {
         if(server == null) {
-            player.sendMessage(new ComponentBuilder("§b[Cameron] §cThis server is offline.").create());
+            player.sendMessage(SERVER_OFFLINE);
             return;
         }
         if(!player.getServer().getInfo().getName().equals(server.getName())) {
             server.ping(((result, error) -> {
                 if (error != null) {
-                    player.sendMessage(new ComponentBuilder("§b[Cameron] §cThis server is offline.").create());
+                    player.sendMessage(SERVER_OFFLINE);
                     return;
                 }
                 player.connect(server);
@@ -73,6 +75,6 @@ public class JoinCmd extends Command implements TabExecutor {
             arguments.stream().filter(s -> s.toLowerCase().startsWith(args[0].toLowerCase())).forEach(completions::add);
             return completions;
         }
-        return new ArrayList<>();
+        return Collections.emptyList();
     }
 }
