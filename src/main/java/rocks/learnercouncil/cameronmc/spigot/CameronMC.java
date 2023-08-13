@@ -6,15 +6,21 @@ import rocks.learnercouncil.cameronmc.spigot.commands.CameronCmd;
 import rocks.learnercouncil.cameronmc.spigot.events.PlayerJoin;
 import rocks.learnercouncil.cameronmc.spigot.events.PlayerLeave;
 
+import java.util.List;
+
 public class CameronMC extends JavaPlugin {
 
     @Getter private static CameronMC instance;
+    public static List<String> navigatorLocations;
 
     @SuppressWarnings("ConstantConditions")
     @Override
     public void onEnable() {
         instance = this;
         getLogger().info("CameronMC (Spigot) started.");
+
+        saveDefaultConfig();
+        Portal.initialize();
 
         getServer().getMessenger().registerOutgoingPluginChannel(this, "cameron:main");
         getServer().getMessenger().registerIncomingPluginChannel(this, "cameron:main", new PluginMessageHandler());
@@ -27,5 +33,8 @@ public class CameronMC extends JavaPlugin {
     }
 
     @Override
-    public void onDisable() {}
+    public void onDisable() {
+        getConfig().set("portals", Portal.portals.values());
+        saveConfig();
+    }
 }

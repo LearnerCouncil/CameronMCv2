@@ -25,7 +25,7 @@ public class PluginMessageHandler implements PluginMessageListener {
         p.sendPluginMessage(plugin, "cameron:main", out.toByteArray());
     }
     @Override
-    public void onPluginMessageReceived(String channel, @NotNull Player player, byte[] message) {
+    public void onPluginMessageReceived(String channel, @NotNull Player player, @NotNull byte[] message) {
         if(!(channel.equals("cameron:main"))) return;
         ByteArrayDataInput in = ByteStreams.newDataInput(message);
         String subchannel = in.readUTF();
@@ -58,7 +58,6 @@ public class PluginMessageHandler implements PluginMessageListener {
                 player.teleport(location);
                 cancel();
             }
-        }.runTaskTimer(plugin, 0, 20);
-
+        }.runTaskTimer(plugin, 0, 10);
     }
 }

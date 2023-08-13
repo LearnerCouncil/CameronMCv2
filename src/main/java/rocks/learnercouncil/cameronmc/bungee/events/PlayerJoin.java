@@ -19,6 +19,7 @@ public class PlayerJoin implements Listener {
 
     @EventHandler
     public void onPlayerJoin(ServerConnectEvent e) {
+        NavigatorLocation.sendToServer(e.getTarget());
         if(!e.getReason().equals(ServerConnectEvent.Reason.JOIN_PROXY)) return;
         ProxiedPlayer p = e.getPlayer();
         sendToHub(p, e.getTarget());
@@ -27,7 +28,6 @@ public class PlayerJoin implements Listener {
             p.sendMessage(new ComponentBuilder("§4§lATTENTION! §c§lYou connected to the server using §f§lplay.learnercouncil.rocks§c§l, that server address works for now, but it won't for long! In the future, please connect using §f§lmc.learnercouncil.rocks§c§l, Thank you.").create());
         else if(!p.getPendingConnection().getVirtualHost().getHostString().contains("learnercouncil.rocks") && !p.getName().startsWith("+"))
             p.sendMessage(new ComponentBuilder("§4§lATTENTION! §c§lYou connected to the server using a unknown address, that address is not controlled by us and may be unsafe. In the future, please connect using §f§lmc.learnercouncil.rocks§c§l, Thank you.").create());
-
     }
 
     private void sendToHub(ProxiedPlayer player, ServerInfo targetServer) {

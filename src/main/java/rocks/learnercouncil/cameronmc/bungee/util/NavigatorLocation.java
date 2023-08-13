@@ -4,9 +4,7 @@ import lombok.Getter;
 import net.md_5.bungee.api.config.ServerInfo;
 import rocks.learnercouncil.cameronmc.bungee.CameronMC;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Optional;
+import java.util.*;
 
 public class NavigatorLocation {
 
@@ -16,6 +14,13 @@ public class NavigatorLocation {
     public static Optional<NavigatorLocation> get(String name) {
         return locations.keySet().stream().filter(k -> k.equalsIgnoreCase(name)).findFirst().map(s -> locations.get(s));
 
+    }
+    private static final Set<ServerInfo> recievedServers = new HashSet<>();
+    public static void sendToServer(ServerInfo server) {
+        if(recievedServers.contains(server)) return;
+        String[] locationNames = locations.keySet().toArray(new String[0]);
+        PluginMessageHandler.sendPluginMessage(server, "send-navigator-locations", locationNames);
+        recievedServers.add(server);
     }
 
     private final @Getter ServerInfo server;
@@ -67,5 +72,4 @@ public class NavigatorLocation {
         }
         return input;
     }
-
 }

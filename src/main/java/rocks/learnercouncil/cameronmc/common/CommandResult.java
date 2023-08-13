@@ -18,7 +18,9 @@ public class CommandResult {
     }
 
     public static final BaseComponent[]
-            RELOADED = result("Config Reloaded.");
+            NONE = {},
+            RELOADED = result("Config Reloaded."),
+            PORTAL_CREATED = result("Portal Created.");
 
     public static BaseComponent[] locationSet(String world, String x, String y, String z, String yaw, String pitch) {
         return result("Navicator location set. (World: " + world + ", XYZ: " + x + ", " + y + ", " + z + ", Angle: " + yaw + ", " + pitch + ")");
@@ -34,7 +36,9 @@ public class CommandResult {
             INVALID_ARGS = error("Invalid arguments."),
             MUST_SPECIFY_LOCATION = error("You must specify a location."),
             SERVER_OFFLINE = error("That server is offline."),
-            MUST_SPECIFY_SPEED = error("You must specify a flight speed.");
+            MUST_SPECIFY_SPEED = error("You must specify a flight speed."),
+            MUST_SPECIFY_PORTAL_NAME = error("You must sepcify a name for this portal."),
+            MUST_SPECIFY_PORTAL_DESTINATION = error("You must specify a destination for this portal.");
 
     public static BaseComponent[] needsPlayer(String command) {
         return error("'" + command + "' needs to be executed by a player.");
