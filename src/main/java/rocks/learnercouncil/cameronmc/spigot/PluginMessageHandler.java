@@ -33,24 +33,30 @@ public class PluginMessageHandler implements PluginMessageListener {
         if(!(channel.equals("cameron:main"))) return;
         ByteArrayDataInput in = ByteStreams.newDataInput(message);
         String subchannel = in.readUTF();
-        if(subchannel.equals("teleport-player")) {
-            UUID uuid = UUID.fromString(in.readUTF());
-            World world = Bukkit.getServer().getWorld(in.readUTF());
-            double x = Double.parseDouble(in.readUTF());
-            double y = Double.parseDouble(in.readUTF());
-            double z = Double.parseDouble(in.readUTF());
-            float pitch = Float.parseFloat(in.readUTF());
-            float yaw = Float.parseFloat(in.readUTF());
-            Location location = new Location(world, x, y, z, yaw, pitch);
-            teleport(uuid, location);
+        switch (subchannel) {
+            case "teleport-player": {
+                UUID uuid = UUID.fromString(in.readUTF());
+                World world = Bukkit.getServer().getWorld(in.readUTF());
+                double x = Double.parseDouble(in.readUTF());
+                double y = Double.parseDouble(in.readUTF());
+                double z = Double.parseDouble(in.readUTF());
+                float pitch = Float.parseFloat(in.readUTF());
+                float yaw = Float.parseFloat(in.readUTF());
+                Location location = new Location(world, x, y, z, yaw, pitch);
+                teleport(uuid, location);
 
-        } else if(subchannel.equals("send-navigator-locations")) {
-            int amount = Integer.parseInt(in.readUTF());
-            Set<String> locations = new HashSet<>();
-            for(int i = 0; i < amount; i++) {
-                locations.add(in.readUTF());
+                break;
             }
-            AddArg.navigatorLocations = locations;
+            case "send-navigator-locations": {
+                int amount = Integer.parseInt(in.readUTF());
+                Set<String> locations = new HashSet<>();
+                for (int i = 0; i < amount; i++) {
+                    locations.add(in.readUTF());
+                }
+                AddArg.navigatorLocations = locations;
+                CameronMC.recievedNavigatorLocations = true;
+                break;
+            }
         }
     }
 

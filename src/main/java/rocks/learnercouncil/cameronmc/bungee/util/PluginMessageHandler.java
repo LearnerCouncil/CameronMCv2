@@ -39,39 +39,51 @@ public class PluginMessageHandler implements Listener {
         if(!(e.getTag().equals("cameron:main"))) return;
         ByteArrayDataInput in = ByteStreams.newDataInput(e.getData());
         String subchannel = in.readUTF();
-        if(subchannel.equals("set-navigator")) {
-            Configuration cfg = plugin.navigatorCfg.getConfig();
-            String entry = in.readUTF();
-            ServerInfo server = plugin.getProxy().getPlayer(UUID.fromString(in.readUTF())).getServer().getInfo();
-            String world = in.readUTF();
-            String x = in.readUTF();
-            String y = in.readUTF();
-            String z = in.readUTF();
-            String pitch = in.readUTF();
-            String yaw = in.readUTF();
+        System.out.println("Plugin message recived: " + subchannel);
+        switch (subchannel) {
+            case "set-navigator": {
+                Configuration cfg = plugin.navigatorCfg.getConfig();
+                String entry = in.readUTF();
+                ServerInfo server = plugin.getProxy().getPlayer(UUID.fromString(in.readUTF())).getServer().getInfo();
+                String world = in.readUTF();
+                String x = in.readUTF();
+                String y = in.readUTF();
+                String z = in.readUTF();
+                String pitch = in.readUTF();
+                String yaw = in.readUTF();
 
-            cfg.set(entry + ".server", server.getName());
-            cfg.set(entry + ".world", world);
-            cfg.set(entry + ".x", x);
-            cfg.set(entry + ".y", y);
-            cfg.set(entry + ".z", z);
-            cfg.set(entry + ".pitch", pitch);
-            cfg.set(entry + ".yaw", yaw);
-            plugin.navigatorCfg.saveConfig();
+                cfg.set(entry + ".server", server.getName());
+                cfg.set(entry + ".world", world);
+                cfg.set(entry + ".x", x);
+                cfg.set(entry + ".y", y);
+                cfg.set(entry + ".z", z);
+                cfg.set(entry + ".pitch", pitch);
+                cfg.set(entry + ".yaw", yaw);
+                plugin.navigatorCfg.saveConfig();
 
-            NavigatorLocation.getLocations().put(entry, new NavigatorLocation(server, world, x, y, z, pitch, yaw));
-
-        } else if(subchannel.equals("teleport-player")) {
-            UUID uuid = UUID.fromString(in.readUTF());
-            String locationString = in.readUTF();
-            ServerInfo server = ((Server) e.getSender()).getInfo();
-
-            Optional<NavigatorLocation> location = NavigatorLocation.get(locationString);
-            if(!location.isPresent()) {
-                plugin.getLogger().warning("Tried sending player to navigator location '" + locationString + "', but no shuch location exists. Aborting.");
-                return;
+                NavigatorLocation.getLocations().put(entry, new NavigatorLocation(server, world, x, y, z, pitch, yaw));
+                NavigatorLocation.sendToServers();
+                break;
             }
-            JoinCmd.sendPlayer(plugin.getProxy().getPlayer(uuid), server, location.get());
+            case "teleport-player": {
+                UUID uuid = UUID.fromString(in.readUTF());
+                String locationString = in.readUTF();
+                ServerInfo server = ((Server) e.getSender()).getInfo();
+
+                Optional<NavigatorLocation> location = NavigatorLocation.get(locationString);
+                if (!location.isPresent()) {
+                    plugin.getLogger().warning("Tried sending player to navigator location '" + locationString + "', but no shuch location exists. Aborting.");
+                    return;
+                }
+                JoinCmd.sendPlayer(plugin.getProxy().getPlayer(uuid), server, location.get());
+
+                break;
+            }
+            case "request-navigator-locations": {
+                ServerInfo server = ((Server) e.getSender()).getInfo();
+                NavigatorLocation.sendToServer(server);
+                break;
+            }
         }
     }
 }

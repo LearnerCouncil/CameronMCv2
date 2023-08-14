@@ -93,13 +93,12 @@ public class Portal implements ConfigurationSerializable {
             for(Portal portal : portals.values()) {
                 plugin.getServer().getOnlinePlayers().forEach(player -> {
                     Block block = player.getLocation().getBlock();
-                    if(portal.boundingBox.contains(block.getLocation().toVector())) {
-                        if(portal.materials.length == 0)
-                            PluginMessageHandler.sendPluginMessage(player, "teleport-player", player.getUniqueId().toString(), portal.destination);
-                        for(Material material : portal.materials) {
-                            if(block.getType() == material)
-                                PluginMessageHandler.sendPluginMessage(player, "teleport-player", player.getUniqueId().toString(), portal.destination);
-                        }
+                    if(!portal.boundingBox.contains(block.getLocation().toVector())) return;
+                    if(portal.materials.length == 0)
+                        PluginMessageHandler.sendPluginMessage(player, "teleport-player", player.getUniqueId().toString(), portal.destination);
+                    for(Material material : portal.materials) {
+                        if(block.getType() != material) return;
+                        PluginMessageHandler.sendPluginMessage(player, "teleport-player", player.getUniqueId().toString(), portal.destination);
                     }
                 });
             }
