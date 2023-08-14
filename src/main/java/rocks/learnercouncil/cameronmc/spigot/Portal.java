@@ -32,10 +32,12 @@ public class Portal implements ConfigurationSerializable {
         this.materials = materials;
     }
     public static void add(String name, String target, BoundingBox boundingBox, Material[] materials) {
+        if(portals.isEmpty()) DetectionLoop.start();
         portals.put(name, new Portal(name, target, boundingBox, materials));
     }
     public static boolean remove(String name) {
         Portal removed = portals.remove(name);
+        if(portals.isEmpty()) DetectionLoop.stop();
         return removed != null;
     }
 
@@ -45,6 +47,15 @@ public class Portal implements ConfigurationSerializable {
     private final BoundingBox boundingBox;
     private final Material[] materials;
 
+    @Override
+    public String toString() {
+        return "Portal{" +
+                "name='" + name + '\'' +
+                ", destination='" + destination + '\'' +
+                ", boundingBox=" + boundingBox +
+                ", materials=" + Arrays.toString(materials) +
+                '}';
+    }
 
     @SuppressWarnings({"unchecked", "unused"})
     public Portal(Map<String, Object> m) {
@@ -79,6 +90,7 @@ public class Portal implements ConfigurationSerializable {
         @Override
         public void run() {
             for(Portal portal : portals.values()) {
+                plugin.getLogger().info("Looping through: " + portal);
                 plugin.getServer().getOnlinePlayers().forEach(player -> {
                     if(portal.boundingBox.contains(player.getLocation().toVector())) {
                         PluginMessageHandler.sendPluginMessage(player, "teleport-player", player.getUniqueId().toString(), portal.destination);

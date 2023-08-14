@@ -7,7 +7,9 @@ import rocks.learnercouncil.cameronmc.spigot.commands.CameronCmd;
 import rocks.learnercouncil.cameronmc.spigot.events.PlayerJoin;
 import rocks.learnercouncil.cameronmc.spigot.events.PlayerLeave;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CameronMC extends JavaPlugin {
 
@@ -37,7 +39,7 @@ public class CameronMC extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        getConfig().set("portals", Portal.portals.values());
+        getConfig().set("portals", new ArrayList<>(Portal.portals.values()));
         saveConfig();
     }
 }
