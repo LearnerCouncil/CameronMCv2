@@ -73,6 +73,7 @@ public class Selection {
                 messageComponent.setText(String.format(message, 1));
             }
             player.spigot().sendMessage(ChatMessageType.ACTION_BAR, messageComponent);
+            event.setCancelled(true);
         }
     }
 }
