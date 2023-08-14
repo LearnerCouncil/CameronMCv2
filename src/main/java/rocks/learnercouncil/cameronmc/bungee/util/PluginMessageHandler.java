@@ -4,13 +4,16 @@ import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import net.md_5.bungee.api.config.ServerInfo;
+import net.md_5.bungee.api.connection.Server;
 import net.md_5.bungee.api.event.PluginMessageEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.event.EventHandler;
 import rocks.learnercouncil.cameronmc.bungee.CameronMC;
+import rocks.learnercouncil.cameronmc.bungee.commands.JoinCmd;
 
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.UUID;
 
 @SuppressWarnings("UnstableApiUsage")
@@ -57,6 +60,18 @@ public class PluginMessageHandler implements Listener {
             plugin.navigatorCfg.saveConfig();
 
             NavigatorLocation.getLocations().put(entry, new NavigatorLocation(server, world, x, y, z, pitch, yaw));
+
+        } else if(subchannel.equals("teleport-player")) {
+            UUID uuid = UUID.fromString(in.readUTF());
+            String locationString = in.readUTF();
+            ServerInfo server = ((Server) e.getSender()).getInfo();
+
+            Optional<NavigatorLocation> location = NavigatorLocation.get(locationString);
+            if(!location.isPresent()) {
+                plugin.getLogger().warning("Tried sending player to navigator location '" + locationString + "', but no shuch location exists. Aborting.");
+                return;
+            }
+            JoinCmd.sendPlayer(plugin.getProxy().getPlayer(uuid), server, location.get());
         }
     }
 }

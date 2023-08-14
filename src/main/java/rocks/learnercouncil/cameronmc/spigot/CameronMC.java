@@ -1,6 +1,7 @@
 package rocks.learnercouncil.cameronmc.spigot;
 
 import lombok.Getter;
+import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.java.JavaPlugin;
 import rocks.learnercouncil.cameronmc.spigot.commands.CameronCmd;
 import rocks.learnercouncil.cameronmc.spigot.events.PlayerJoin;
@@ -19,6 +20,7 @@ public class CameronMC extends JavaPlugin {
         instance = this;
         getLogger().info("CameronMC (Spigot) started.");
 
+        ConfigurationSerialization.registerClass(Portal.class);
         saveDefaultConfig();
         Portal.initialize();
 

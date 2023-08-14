@@ -10,8 +10,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
+import rocks.learnercouncil.cameronmc.bungee.util.NavigatorLocation;
+import rocks.learnercouncil.cameronmc.spigot.commands.arguments.portal.AddArg;
 
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @SuppressWarnings("UnstableApiUsage")
@@ -29,7 +33,7 @@ public class PluginMessageHandler implements PluginMessageListener {
         if(!(channel.equals("cameron:main"))) return;
         ByteArrayDataInput in = ByteStreams.newDataInput(message);
         String subchannel = in.readUTF();
-        if(subchannel.equalsIgnoreCase("teleport-player")) {
+        if(subchannel.equals("teleport-player")) {
             UUID uuid = UUID.fromString(in.readUTF());
             World world = Bukkit.getServer().getWorld(in.readUTF());
             double x = Double.parseDouble(in.readUTF());
@@ -39,6 +43,14 @@ public class PluginMessageHandler implements PluginMessageListener {
             float yaw = Float.parseFloat(in.readUTF());
             Location location = new Location(world, x, y, z, yaw, pitch);
             teleport(uuid, location);
+
+        } else if(subchannel.equals("send-navigator-locations")) {
+            int amount = Integer.parseInt(in.readUTF());
+            Set<String> locations = new HashSet<>();
+            for(int i = 0; i < amount; i++) {
+                locations.add(in.readUTF());
+            }
+            AddArg.navigatorLocations = locations;
         }
     }
 

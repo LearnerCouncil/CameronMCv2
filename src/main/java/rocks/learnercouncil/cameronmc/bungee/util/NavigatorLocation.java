@@ -5,6 +5,7 @@ import net.md_5.bungee.api.config.ServerInfo;
 import rocks.learnercouncil.cameronmc.bungee.CameronMC;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class NavigatorLocation {
 
@@ -18,7 +19,9 @@ public class NavigatorLocation {
     private static final Set<ServerInfo> recievedServers = new HashSet<>();
     public static void sendToServer(ServerInfo server) {
         if(recievedServers.contains(server)) return;
-        String[] locationNames = locations.keySet().toArray(new String[0]);
+        List<String> locationList = new ArrayList<>(locations.keySet());
+        locationList.add(0, String.valueOf(locationList.size()));
+        String[] locationNames = locationList.toArray(new String[0]);
         PluginMessageHandler.sendPluginMessage(server, "send-navigator-locations", locationNames);
         recievedServers.add(server);
     }

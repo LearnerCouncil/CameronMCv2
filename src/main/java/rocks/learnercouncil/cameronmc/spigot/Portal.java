@@ -34,8 +34,9 @@ public class Portal implements ConfigurationSerializable {
     public static void add(String name, String target, BoundingBox boundingBox, Material[] materials) {
         portals.put(name, new Portal(name, target, boundingBox, materials));
     }
-    public static void remove(String name) {
-        portals.remove(name);
+    public static boolean remove(String name) {
+        Portal removed = portals.remove(name);
+        return removed != null;
     }
 
 
@@ -77,7 +78,13 @@ public class Portal implements ConfigurationSerializable {
 
         @Override
         public void run() {
-
+            for(Portal portal : portals.values()) {
+                plugin.getServer().getOnlinePlayers().forEach(player -> {
+                    if(portal.boundingBox.contains(player.getLocation().toVector())) {
+                        PluginMessageHandler.sendPluginMessage(player, "teleport-player", player.getUniqueId().toString(), portal.destination);
+                    }
+                });
+            }
         }
     }
 
