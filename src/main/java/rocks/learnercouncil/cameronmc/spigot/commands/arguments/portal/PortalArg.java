@@ -20,7 +20,9 @@ import static rocks.learnercouncil.cameronmc.common.CommandResult.*;
 public class PortalArg implements CommandArgument {
 
     private final CommandArgument[] arguments = {
-            new AddArg()
+            new AddArg(),
+            new RemoveArg(),
+            new SelectorArg()
     };
 
     @Override

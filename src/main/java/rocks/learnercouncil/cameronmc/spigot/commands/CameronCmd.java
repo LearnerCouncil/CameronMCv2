@@ -9,6 +9,7 @@ import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
 import rocks.learnercouncil.cameronmc.spigot.commands.arguments.FlySpeedArg;
 import rocks.learnercouncil.cameronmc.spigot.commands.arguments.SetNavigatorArg;
+import rocks.learnercouncil.cameronmc.spigot.commands.arguments.portal.PortalArg;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,7 +23,8 @@ public class CameronCmd implements TabExecutor {
 
     private final CommandArgument[] arguments = {
             new SetNavigatorArg(),
-            new FlySpeedArg()
+            new FlySpeedArg(),
+            new PortalArg()
     };
 
     @Override

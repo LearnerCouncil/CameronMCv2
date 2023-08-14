@@ -9,7 +9,7 @@ import static net.md_5.bungee.api.ChatColor.*;
 public class CommandResult {
 
     private static ComponentBuilder prefix() {
-        return new ComponentBuilder("[Cameron]").color(AQUA);
+        return new ComponentBuilder("[Cameron] ").color(AQUA);
     }
     private static BaseComponent[] error(String message) {
         return prefix().append(message).color(RED).create();
@@ -52,7 +52,7 @@ public class CommandResult {
             MUST_SPECIFY_SPEED = error("You must specify a flight speed."),
             MUST_SPECIFY_PORTAL_NAME = error("You must sepcify a name for this portal."),
             MUST_SPECIFY_PORTAL_DESTINATION = error("You must specify a destination for this portal."),
-            MUST_SPECIFY_PORTAL = error("YOu must specify the portal you want to remove."),
+            MUST_SPECIFY_PORTAL = error("You must specify the portal you want to remove."),
             MUST_SELECT_AREA = error("You must select an area for the portal."),
             NO_PORTAL = error("That portal doesn't exist.");
 
