@@ -25,7 +25,7 @@ public class RemoveArg implements CommandArgument {
     @Override
     public List<String> tabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
         if(args.length == 2) return Collections.singletonList("remove");
-        if(args.length == 3) return new ArrayList<>(Portal.portals.keySet());
+        if(args.length == 3 && args[1].equalsIgnoreCase("remove")) return new ArrayList<>(Portal.portals.keySet());
         return Collections.emptyList();
     }
 }

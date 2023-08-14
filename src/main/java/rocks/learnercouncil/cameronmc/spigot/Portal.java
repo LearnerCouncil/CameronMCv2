@@ -1,6 +1,7 @@
 package rocks.learnercouncil.cameronmc.spigot;
 
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -90,10 +91,15 @@ public class Portal implements ConfigurationSerializable {
         @Override
         public void run() {
             for(Portal portal : portals.values()) {
-                plugin.getLogger().info("Looping through: " + portal);
                 plugin.getServer().getOnlinePlayers().forEach(player -> {
-                    if(portal.boundingBox.contains(player.getLocation().toVector())) {
-                        PluginMessageHandler.sendPluginMessage(player, "teleport-player", player.getUniqueId().toString(), portal.destination);
+                    Block block = player.getLocation().getBlock();
+                    if(portal.boundingBox.contains(block.getLocation().toVector())) {
+                        if(portal.materials.length == 0)
+                            PluginMessageHandler.sendPluginMessage(player, "teleport-player", player.getUniqueId().toString(), portal.destination);
+                        for(Material material : portal.materials) {
+                            if(block.getType() == material)
+                                PluginMessageHandler.sendPluginMessage(player, "teleport-player", player.getUniqueId().toString(), portal.destination);
+                        }
                     }
                 });
             }

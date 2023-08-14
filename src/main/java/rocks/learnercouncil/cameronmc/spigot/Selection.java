@@ -23,17 +23,19 @@ public class Selection {
     public static Optional<Selection> getSelection(Player player) {
         if(!selections.containsKey(player)) return Optional.empty();
         Selection selection = selections.get(player);
-        if(selection.selectionBoxMax == null || selection.selectionBoxMin == null) return Optional.empty();
+        if(selection.corner1 == null || selection.corner2 == null) return Optional.empty();
         return Optional.of(selection);
     }
     private ItemStack selector = null;
     public Optional<ItemStack> getSelector() {
         return Optional.ofNullable(selector);
     }
-    private Vector selectionBoxMax, selectionBoxMin;
+    private Vector corner1, corner2;
     public BoundingBox getSelectionBox() {
-        if(selectionBoxMax == null || selectionBoxMin == null) throw new NullPointerException("Selection box was retrieved, but was null.");
-        return BoundingBox.of(selectionBoxMin, selectionBoxMax);
+        if(corner1 == null || corner2 == null) throw new NullPointerException("Selection box was retrieved, but was null.");
+        Vector max = Vector.getMaximum(corner2, corner1);
+        Vector min = Vector.getMinimum(corner2, corner1);
+        return BoundingBox.of(min, max.add(new Vector(1, 1, 1)));
     }
 
     public static void giveSelector(Player player) {
@@ -65,11 +67,11 @@ public class Selection {
             messageComponent.setColor(ChatColor.GREEN);
 
             if(event.getAction() == Action.LEFT_CLICK_BLOCK) {
-                selection.selectionBoxMin = Objects.requireNonNull(event.getClickedBlock()).getLocation().toVector();
+                selection.corner2 = Objects.requireNonNull(event.getClickedBlock()).getLocation().toVector();
                 messageComponent.setText(String.format(message, 1));
             }
             if(event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-                selection.selectionBoxMax = blockLocation;
+                selection.corner1 = blockLocation;
                 messageComponent.setText(String.format(message, 1));
             }
             player.spigot().sendMessage(ChatMessageType.ACTION_BAR, messageComponent);

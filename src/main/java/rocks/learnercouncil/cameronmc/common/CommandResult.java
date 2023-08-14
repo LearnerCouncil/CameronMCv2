@@ -37,9 +37,9 @@ public class CommandResult {
         destroyKeybind.setColor(YELLOW);
         return prefix().append("You have now been given a portal selector.\n Press ").color(GREEN)
                 .append("[").color(YELLOW).append(destroyKeybind).append("]").color(YELLOW)
-                .append(" to select the first position and ")
+                .append(" to select the first position and ").color(GREEN)
                 .append("[").color(YELLOW).append(placeKeybind).append("]").color(YELLOW)
-                .append(" to select the second.").create();
+                .append(" to select the second.").color(GREEN).create();
     }
 
     public static final BaseComponent[]
