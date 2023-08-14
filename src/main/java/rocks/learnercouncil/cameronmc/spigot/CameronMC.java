@@ -27,6 +27,7 @@ public class CameronMC extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new PlayerJoin(), this);
         getServer().getPluginManager().registerEvents(new PlayerLeave(), this);
+        getServer().getPluginManager().registerEvents(new Selection.Events(), this);
 
         getServer().getPluginCommand("cameron").setExecutor(new CameronCmd());
         getServer().getPluginCommand("cameron").setTabCompleter(new CameronCmd());

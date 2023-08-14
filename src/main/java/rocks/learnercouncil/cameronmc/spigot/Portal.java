@@ -25,13 +25,13 @@ public class Portal implements ConfigurationSerializable {
         portalList.forEach(p -> portals.put(p.name, p));
         DetectionLoop.start();
     }
-    private Portal(String name, String target, BoundingBox boundingBox, Set<Material> materials) {
+    private Portal(String name, String target, BoundingBox boundingBox, Material[] materials) {
         this.name = name;
         this.destination = target;
         this.boundingBox = boundingBox;
         this.materials = materials;
     }
-    public static void add(String name, String target, BoundingBox boundingBox, Set<Material> materials) {
+    public static void add(String name, String target, BoundingBox boundingBox, Material[] materials) {
         portals.put(name, new Portal(name, target, boundingBox, materials));
     }
     public static void remove(String name) {
@@ -42,10 +42,10 @@ public class Portal implements ConfigurationSerializable {
     private final String name;
     private final String destination;
     private final BoundingBox boundingBox;
-    private final Set<Material> materials;
+    private final Material[] materials;
 
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "unused"})
     public Portal(Map<String, Object> m) {
         name = (String) m.get("name");
         destination = (String) m.get("destination");
@@ -101,11 +101,11 @@ public class Portal implements ConfigurationSerializable {
             }
         }
 
-        public static List<String> fromMaterials(Set<Material> materials) {
-            return materials.stream().map(Enum::toString).collect(Collectors.toList());
+        public static List<String> fromMaterials(Material[] materials) {
+            return Arrays.stream(materials).map(Enum::toString).collect(Collectors.toList());
         }
-        public static Set<Material> toMaterials(List<String> strings) {
-            return strings.stream().map(Material::getMaterial).collect(Collectors.toSet());
+        public static Material[] toMaterials(List<String> strings) {
+            return strings.stream().map(Material::getMaterial).toArray(Material[]::new);
         }
     }
 }

@@ -2,6 +2,7 @@ package rocks.learnercouncil.cameronmc.common;
 
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.KeybindComponent;
 
 import static net.md_5.bungee.api.ChatColor.*;
 
@@ -19,8 +20,9 @@ public class CommandResult {
 
     public static final BaseComponent[]
             NONE = {},
-            RELOADED = result("Config Reloaded."),
-            PORTAL_CREATED = result("Portal Created.");
+            RELOADED = result("Config reloaded."),
+            PORTAL_CREATED = result("Portal created."),
+            PORTAL_REMOVED = result("Portal removed.");
 
     public static BaseComponent[] locationSet(String world, String x, String y, String z, String yaw, String pitch) {
         return result("Navicator location set. (World: " + world + ", XYZ: " + x + ", " + y + ", " + z + ", Angle: " + yaw + ", " + pitch + ")");
@@ -28,7 +30,18 @@ public class CommandResult {
     public static BaseComponent[] speedSet(String speed) {
         return prefix().append("Set your flying speed to '").color(GREEN).append(speed).color(YELLOW).append("'.").color(GREEN).create();
     }
-    
+    public static BaseComponent[] selectorGiven() {
+        KeybindComponent placeKeybind = new KeybindComponent("key.use");
+        placeKeybind.setColor(YELLOW);
+        KeybindComponent destroyKeybind = new KeybindComponent("key.attack");
+        destroyKeybind.setColor(YELLOW);
+        return prefix().append("You have now been given a portal selector.\n Press ").color(GREEN)
+                .append("[").color(YELLOW).append(destroyKeybind).append("]").color(YELLOW)
+                .append(" to select the first position and ")
+                .append("[").color(YELLOW).append(placeKeybind).append("]").color(YELLOW)
+                .append(" to select the second.").create();
+    }
+
     public static final BaseComponent[]
             NO_PERMISSION = error("Sorry, but you don't have permission to execute this command."),
             TOO_MANY_ARGS = error("Too many arguments."),
@@ -38,7 +51,10 @@ public class CommandResult {
             SERVER_OFFLINE = error("That server is offline."),
             MUST_SPECIFY_SPEED = error("You must specify a flight speed."),
             MUST_SPECIFY_PORTAL_NAME = error("You must sepcify a name for this portal."),
-            MUST_SPECIFY_PORTAL_DESTINATION = error("You must specify a destination for this portal.");
+            MUST_SPECIFY_PORTAL_DESTINATION = error("You must specify a destination for this portal."),
+            MUST_SPECIFY_PORTAL = error("YOu must specify the portal you want to remove."),
+            MUST_SELECT_AREA = error("You must select an area for the portal."),
+            NO_PORTAL = error("That portal doesn't exist.");
 
     public static BaseComponent[] needsPlayer(String command) {
         return error("'" + command + "' needs to be executed by a player.");
