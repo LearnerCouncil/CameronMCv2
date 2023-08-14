@@ -23,6 +23,10 @@ public class PluginMessageHandler implements PluginMessageListener {
     private static final CameronMC plugin = CameronMC.getInstance();
 
     public static void sendPluginMessage(Player p, String subchannel, String... message) {
+        if(plugin.getServer().getOnlinePlayers().isEmpty()) {
+            plugin.getLogger().severe("No players online, message couldn't be sent.");
+            return;
+        }
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeUTF(subchannel);
         Arrays.stream(message).forEach(out::writeUTF);

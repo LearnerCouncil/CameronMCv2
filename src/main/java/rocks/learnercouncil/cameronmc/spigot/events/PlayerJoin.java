@@ -24,7 +24,7 @@ public class PlayerJoin implements Listener {
                     PluginMessageHandler.sendPluginMessage(e.getPlayer(), "request-navigator-locations");
                     System.out.println("Requesting navigator locations...");
                 }
-            }.runTaskLater(CameronMC.getInstance(), 10);
+            }.runTaskLater(CameronMC.getInstance(), 20);
         }
     }
 }

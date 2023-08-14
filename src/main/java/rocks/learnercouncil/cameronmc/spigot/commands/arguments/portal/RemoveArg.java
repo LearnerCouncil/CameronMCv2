@@ -19,7 +19,7 @@ public class RemoveArg implements CommandArgument {
         if(!args[1].equalsIgnoreCase("remove")) return NONE;
         if(args.length == 2) return MUST_SPECIFY_PORTAL;
         if(args.length > 3) return TOO_MANY_ARGS;
-        return Portal.remove(args[2]) ? NO_PORTAL : PORTAL_REMOVED;
+        return Portal.remove(args[2]) ? PORTAL_REMOVED : NO_PORTAL;
     }
 
     @Override
