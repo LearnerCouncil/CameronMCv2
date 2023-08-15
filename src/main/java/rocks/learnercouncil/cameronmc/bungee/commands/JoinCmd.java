@@ -47,10 +47,11 @@ public class JoinCmd extends Command implements TabExecutor {
             return;
         }
         NavigatorLocation location = locationOptional.get();
-        sendPlayer(p, location.getServer(), location);
+        sendPlayer(p, location);
     }
 
-    private void sendPlayer(ProxiedPlayer player, ServerInfo server, NavigatorLocation location) {
+    public static void sendPlayer(ProxiedPlayer player, NavigatorLocation location) {
+        ServerInfo server = location.getServer();
         if(server == null) {
             player.sendMessage(SERVER_OFFLINE);
             return;
