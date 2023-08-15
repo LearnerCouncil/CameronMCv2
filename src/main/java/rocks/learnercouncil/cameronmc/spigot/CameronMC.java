@@ -6,10 +6,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 import rocks.learnercouncil.cameronmc.spigot.commands.CameronCmd;
 import rocks.learnercouncil.cameronmc.spigot.events.PlayerJoin;
 import rocks.learnercouncil.cameronmc.spigot.events.PlayerLeave;
+import rocks.learnercouncil.cameronmc.spigot.portals.Portal;
+import rocks.learnercouncil.cameronmc.spigot.portals.Selection;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class CameronMC extends JavaPlugin {
 

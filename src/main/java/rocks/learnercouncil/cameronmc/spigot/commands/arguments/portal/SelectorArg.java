@@ -5,7 +5,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import rocks.learnercouncil.cameronmc.spigot.Selection;
+import rocks.learnercouncil.cameronmc.spigot.portals.Selection;
 import rocks.learnercouncil.cameronmc.spigot.commands.CommandArgument;
 
 import java.util.Collections;

@@ -7,6 +7,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import rocks.learnercouncil.cameronmc.spigot.CameronMC;
 import rocks.learnercouncil.cameronmc.spigot.PluginMessageHandler;
+import rocks.learnercouncil.cameronmc.spigot.portals.Cooldown;
+import rocks.learnercouncil.cameronmc.spigot.portals.Portal;
 
 public class PlayerJoin implements Listener {
 
@@ -25,5 +27,6 @@ public class PlayerJoin implements Listener {
                 }
             }.runTaskLater(CameronMC.getInstance(), 20);
         }
+        Cooldown.set(e.getPlayer(), 3);
     }
 }

@@ -1,17 +1,22 @@
-package rocks.learnercouncil.cameronmc.spigot;
+package rocks.learnercouncil.cameronmc.spigot.portals;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.BoundingBox;
 import org.jetbrains.annotations.NotNull;
+import rocks.learnercouncil.cameronmc.spigot.CameronMC;
+import rocks.learnercouncil.cameronmc.spigot.PluginMessageHandler;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static rocks.learnercouncil.cameronmc.spigot.Portal.Serializers.*;
+import static rocks.learnercouncil.cameronmc.spigot.portals.Portal.Serializers.*;
 
 public class Portal implements ConfigurationSerializable {
     private static final CameronMC plugin = CameronMC.getInstance();
@@ -41,7 +46,6 @@ public class Portal implements ConfigurationSerializable {
         if(portals.isEmpty()) DetectionLoop.stop();
         return removed != null;
     }
-
 
     private final String name;
     private final String destination;
@@ -92,12 +96,16 @@ public class Portal implements ConfigurationSerializable {
         public void run() {
             for(Portal portal : portals.values()) {
                 plugin.getServer().getOnlinePlayers().forEach(player -> {
+                    if(Cooldown.isActive(player)) return;
                     Block block = player.getLocation().getBlock();
                     if(!portal.boundingBox.contains(block.getLocation().toVector())) return;
-                    if(portal.materials.length == 0)
+                    if(portal.materials.length == 0) {
+                        Cooldown.set(player, 5);
                         PluginMessageHandler.sendPluginMessage(player, "teleport-player", player.getUniqueId().toString(), portal.destination);
+                    }
                     for(Material material : portal.materials) {
                         if(block.getType() != material) return;
+                        Cooldown.set(player, 5);
                         PluginMessageHandler.sendPluginMessage(player, "teleport-player", player.getUniqueId().toString(), portal.destination);
                     }
                 });

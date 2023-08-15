@@ -1,4 +1,4 @@
-package rocks.learnercouncil.cameronmc.spigot;
+package rocks.learnercouncil.cameronmc.spigot.portals;
 
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;

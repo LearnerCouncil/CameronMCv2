@@ -4,7 +4,7 @@ import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
-import rocks.learnercouncil.cameronmc.spigot.Portal;
+import rocks.learnercouncil.cameronmc.spigot.portals.Portal;
 import rocks.learnercouncil.cameronmc.spigot.commands.CommandArgument;
 
 import java.util.ArrayList;
