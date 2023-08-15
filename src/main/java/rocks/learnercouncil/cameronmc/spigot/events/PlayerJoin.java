@@ -22,7 +22,6 @@ public class PlayerJoin implements Listener {
                 @Override
                 public void run() {
                     PluginMessageHandler.sendPluginMessage(e.getPlayer(), "request-navigator-locations");
-                    System.out.println("Requesting navigator locations...");
                 }
             }.runTaskLater(CameronMC.getInstance(), 20);
         }

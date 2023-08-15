@@ -39,7 +39,6 @@ public class PluginMessageHandler implements Listener {
         if(!(e.getTag().equals("cameron:main"))) return;
         ByteArrayDataInput in = ByteStreams.newDataInput(e.getData());
         String subchannel = in.readUTF();
-        System.out.println("Plugin message recived: " + subchannel);
         switch (subchannel) {
             case "set-navigator": {
                 Configuration cfg = plugin.navigatorCfg.getConfig();

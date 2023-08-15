@@ -21,7 +21,6 @@ public class NavigatorLocation {
         locationList.add(0, String.valueOf(locationList.size()));
         String[] locationNames = locationList.toArray(new String[0]);
         PluginMessageHandler.sendPluginMessage(server, "send-navigator-locations", locationNames);
-        System.out.println("Sending Navigator Locations: " + Arrays.toString(locationNames));
     }
     public static void sendToServers() {
         plugin.getProxy().getServers().values().forEach(NavigatorLocation::sendToServer);
