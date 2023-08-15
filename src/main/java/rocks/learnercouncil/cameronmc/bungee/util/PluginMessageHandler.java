@@ -67,14 +67,13 @@ public class PluginMessageHandler implements Listener {
             case "teleport-player": {
                 UUID uuid = UUID.fromString(in.readUTF());
                 String locationString = in.readUTF();
-                ServerInfo server = ((Server) e.getSender()).getInfo();
 
                 Optional<NavigatorLocation> location = NavigatorLocation.get(locationString);
                 if (!location.isPresent()) {
                     plugin.getLogger().warning("Tried sending player to navigator location '" + locationString + "', but no shuch location exists. Aborting.");
                     return;
                 }
-                JoinCmd.sendPlayer(plugin.getProxy().getPlayer(uuid), server, location.get());
+                JoinCmd.sendPlayer(plugin.getProxy().getPlayer(uuid), location.get());
 
                 break;
             }
