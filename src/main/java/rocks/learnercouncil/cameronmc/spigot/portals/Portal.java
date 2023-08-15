@@ -3,7 +3,6 @@ package rocks.learnercouncil.cameronmc.spigot.portals;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.BoundingBox;
@@ -11,8 +10,6 @@ import org.jetbrains.annotations.NotNull;
 import rocks.learnercouncil.cameronmc.spigot.CameronMC;
 import rocks.learnercouncil.cameronmc.spigot.PluginMessageHandler;
 
-import java.time.Duration;
-import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 

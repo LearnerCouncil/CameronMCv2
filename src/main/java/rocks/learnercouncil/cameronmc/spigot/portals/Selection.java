@@ -10,13 +10,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.BoundingBox;
 import org.bukkit.util.Vector;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 public class Selection {
     private static final Map<Player, Selection> selections = new HashMap<>();
@@ -42,7 +40,12 @@ public class Selection {
         if(!selections.containsKey(player)) selections.put(player, new Selection());
         Selection selection = selections.get(player);
         selection.getSelector().ifPresent(i -> player.getInventory().remove(i));
-        selection.selector = new ItemStack(Material.DIAMOND_AXE, 1);
+        ItemStack selector = new ItemStack(Material.DIAMOND_AXE, 1);
+        ItemMeta selectorMeta = selector.getItemMeta();
+        Objects.requireNonNull(selectorMeta, "Selector ItemMeta is null.");
+        selectorMeta.setDisplayName(ChatColor.RESET.toString() + ChatColor.GREEN + "Portal Selector");
+        selector.setItemMeta(selectorMeta);
+        selection.selector = selector;
         player.getInventory().addItem(selection.selector);
     }
 
@@ -72,7 +75,7 @@ public class Selection {
             }
             if(event.getAction() == Action.RIGHT_CLICK_BLOCK) {
                 selection.corner1 = blockLocation;
-                messageComponent.setText(String.format(message, 1));
+                messageComponent.setText(String.format(message, 2));
             }
             player.spigot().sendMessage(ChatMessageType.ACTION_BAR, messageComponent);
             event.setCancelled(true);

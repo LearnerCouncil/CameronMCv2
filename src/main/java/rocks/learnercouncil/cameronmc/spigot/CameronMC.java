@@ -10,12 +10,10 @@ import rocks.learnercouncil.cameronmc.spigot.portals.Portal;
 import rocks.learnercouncil.cameronmc.spigot.portals.Selection;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class CameronMC extends JavaPlugin {
 
     @Getter private static CameronMC instance;
-    public static List<String> navigatorLocations;
     public static boolean recievedNavigatorLocations = false;
 
     @SuppressWarnings("ConstantConditions")
